@@ -8,9 +8,9 @@ from chalice import (
     Response,
 )
 
-from backend.chalicelib import debug, environment
-from backend.chalicelib.constants import APP_NAME
-from backend.chalicelib.utils.logger import initialize_logging
+from chalicelib import debug, environment
+from chalicelib.constants import APP_NAME
+from chalicelib.utils.logger import initialize_logging
 
 logger = logging.getLogger(APP_NAME)
 
@@ -74,14 +74,18 @@ def ping():
     logger.info("Pong for ping successfully retrieved.", extra=context)
 
     return Response(
-        body={"pong": "From DARE API"},
+        body={"pong": "From File Upload API"},
         status_code=200,
     )
 
 
 @app.route("/files/metadata", methods=["GET"], authorizer=jwt_token_auth)
 def list_file_metadata():
-    pass
+    logger.info("IN HERE")
+    return Response(
+        body={"pong": "From File Upload API"},
+        status_code=200,
+    )
 
 
 @app.route("/files/metadata", methods=["POST"], authorizer=jwt_token_auth)
@@ -90,15 +94,15 @@ def post_file_metadata():
 
 
 @app.route("/files/metadata/{file_uuid}", methods=["GET"], authorizer=jwt_token_auth)
-def get_file_metadata():
+def get_file_metadata(file_uuid):
     pass
 
 
 @app.route("/files/{file_uuid}", methods=["PUT"], authorizer=jwt_token_auth)
-def put_file():
+def put_file(file_uuid):
     pass
 
 
 @app.route("/files/{file_uuid}", methods=["GET"], authorizer=jwt_token_auth)
-def get_file():
+def get_file(file_uuid):
     pass

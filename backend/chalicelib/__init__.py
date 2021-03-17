@@ -2,7 +2,7 @@ import os
 
 from boto3.session import Session
 
-from backend.chalicelib.constants import APP_NAME, AWS_REGION_NAME
+from .constants import APP_NAME, AWS_REGION_NAME
 
 debug = os.getenv("DEBUG", "false").lower() == "true"
 environment = os.getenv("ENV", "development").lower()

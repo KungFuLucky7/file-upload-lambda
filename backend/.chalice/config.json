@@ -1,0 +1,15 @@
+{
+  "version": "2.0",
+  "app_name": "file-upload-lambda",
+  "automatic_layer": true,
+  "stages": {
+    "local": {
+      "api_gateway_stage": "api",
+      "lambda_timeout": 300,
+      "environment_variables": {
+        "DEBUG": "true",
+        "ENV": "local"
+      }
+    }
+  }
+}

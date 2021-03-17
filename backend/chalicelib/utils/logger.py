@@ -5,9 +5,9 @@ from copy import deepcopy
 from re import match
 from time import gmtime, strftime
 
-from backend.chalicelib import environment
-from backend.chalicelib.constants import APP_NAME
-from backend.chalicelib.enums import EnvironmentEnum
+from .. import environment
+from ..constants import APP_NAME
+from ..enums import EnvironmentEnum
 
 
 class LogFormatter(logging.Formatter):
