@@ -130,7 +130,7 @@ def files_put_file_metadata(file_uuid):
     )
 
 
-@app.route("/files/metadata/{file_uuid}", methods=["PUT"], authorizer=jwt_token_auth)
+@app.route("/files/metadata/{file_uuid}", methods=["DELETE"], authorizer=jwt_token_auth)
 def files_delete_file_metadata(file_uuid):
     delete_file_metadata(app, file_uuid)
 

@@ -1,5 +1,7 @@
 import logging
 
+import boto3
+
 from .. import dynamodb_table_name
 from ..constants import APP_NAME
 
@@ -55,4 +57,4 @@ class DynamoDB:
         self._table.delete_item(Key={"file_uuid": file_uuid, "user_id": user_id})
 
 
-db = DynamoDB(dynamodb_table_name)
+db = DynamoDB(boto3.resource("dynamodb").Table(dynamodb_table_name))
