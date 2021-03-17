@@ -17,37 +17,62 @@ logger = logging.getLogger(APP_NAME)
 """
 
 
-def list_file_metadata():
+def list_file_metadata(app):
+    context = app.current_request.context
+
+    logger.info("Listing the file metadata.", extra=context)
     user_id = None
     items = db.query_file_metadata(user_id)
 
     return items
 
 
-def post_file_metadata(file_metadata):
+def post_file_metadata(app, file_metadata):
+    context = app.current_request.context
+
+    logger.info("Posting a file metadata.", extra=context)
     user_id = None
     file_metadata["user_id"] = user_id
-    db.create_file_metadata(file_metadata)
+    item = db.create_file_metadata(file_metadata)
+
+    return item
 
 
-def get_file_metadata(file_uuid):
+def get_file_metadata(app, file_uuid):
+    context = app.current_request.context
+
+    logger.info("Getting a file metadata.", extra=context)
     user_id = None
-    db.get_file_metadata(file_uuid, user_id)
+    item = db.get_file_metadata(file_uuid, user_id)
+
+    return item
 
 
-def put_file_metadata(file_uuid, file_metadata):
+def put_file_metadata(app, file_uuid, file_metadata):
+    context = app.current_request.context
+
+    logger.info("Putting a file metadata.", extra=context)
     user_id = None
-    db.update_file_metadata(file_uuid, user_id, file_metadata)
+    item = db.update_file_metadata(file_uuid, user_id, file_metadata)
+
+    return item
 
 
-def delete_file_metadata(file_uuid):
+def delete_file_metadata(app, file_uuid):
+    context = app.current_request.context
+
+    logger.info("Deleting a file metadata.", extra=context)
     user_id = None
     db.remove_file_metadata(file_uuid, user_id)
 
 
-def put_file(file_uuid):
-    pass
+def put_file(app, file_uuid):
+    context = app.current_request.context
+
+    logger.info("Putting a file.", extra=context)
 
 
-def get_file(file_uuid):
-    pass
+def get_file(app, file_uuid):
+    context = app.current_request.context
+
+    logger.info("Getting a file.", extra=context)
