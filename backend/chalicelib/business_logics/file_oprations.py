@@ -29,17 +29,18 @@ def list_file_metadata(app):
     context = app.current_request.context
 
     logger.info("Listing the file metadata.", extra=context)
-    user_id = None
+    user_id = "terrywon"
     items = query_file_metadata(user_id)
 
     return items
 
 
-def post_file_metadata(app, file_metadata):
+def post_file_metadata(app):
     context = app.current_request.context
 
     logger.info("Posting a file metadata.", extra=context)
-    user_id = None
+    user_id = "terrywon"
+    file_metadata = app.current_request.json_body
     # Get the ID that API Gateway assigns to the API request.
     request_id = app.current_request.context.get("requestId")
     logger.info(f"API Gateway Request ID: {request_id}", extra=context)
@@ -67,11 +68,12 @@ def get_file_metadata(app, file_uuid):
     return item
 
 
-def put_file_metadata(app, file_uuid, file_metadata):
+def put_file_metadata(app, file_uuid):
     context = app.current_request.context
 
     logger.info("Putting a file metadata.", extra=context)
     user_id = None
+    file_metadata = app.current_request.json_body
     file_metadata["user_id"] = user_id
     file_metadata["record_updated"] = get_current_timestamp()
     item = update_file_metadata(file_uuid, user_id, file_metadata)

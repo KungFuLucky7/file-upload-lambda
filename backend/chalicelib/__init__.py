@@ -9,7 +9,7 @@ environment = os.getenv("ENV", "development").lower()
 secret_name = os.getenv("SECRET_NAME", f"{APP_NAME}-secrets")
 dynamodb_table_name = os.getenv("DYNAMODB_TABLE_NAME", f"{APP_NAME}-dynamodb-table")
 dynamodb_table_name_gsi = os.getenv(
-    "DYNAMODB_TABLE_NAME", f"{APP_NAME}-dynamodb-table-gsi"
+    "DYNAMODB_TABLE_GSI", f"{APP_NAME}-dynamodb-table-gsi"
 )
 
 # Create an AWS session that stores configuration state

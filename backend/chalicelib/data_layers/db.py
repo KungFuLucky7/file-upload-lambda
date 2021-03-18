@@ -13,8 +13,8 @@ table = boto3.resource("dynamodb").Table(dynamodb_table_name)
 def query_file_metadata(user_id: str) -> list:
     response = table.query(
         IndexName=dynamodb_table_name_gsi,
-        KeyConditionExpression="userId = :userId",
-        ExpressionAttributeValues={":userId": user_id},
+        KeyConditionExpression="user_id = :user_id",
+        ExpressionAttributeValues={":user_id": user_id},
     )
 
     return response["Items"]

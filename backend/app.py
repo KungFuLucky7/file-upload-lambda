@@ -100,8 +100,7 @@ def files_list_file_metadata():
 
 @app.route("/files/metadata", methods=["POST"], authorizer=jwt_token_auth)
 def files_post_file_metadata():
-    file_metadata = {}
-    item = post_file_metadata(app, file_metadata)
+    item = post_file_metadata(app)
 
     return Response(
         body=item,
@@ -121,8 +120,7 @@ def files_get_file_metadata(file_uuid):
 
 @app.route("/files/metadata/{file_uuid}", methods=["PUT"], authorizer=jwt_token_auth)
 def files_put_file_metadata(file_uuid):
-    file_metadata = {}
-    item = put_file_metadata(app, file_uuid, file_metadata)
+    item = put_file_metadata(app, file_uuid)
 
     return Response(
         body=item,
