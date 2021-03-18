@@ -1,104 +1,116 @@
 {
   "Outputs": {
-    "MediaBucketName": {
+    "FileBucketName": {
       "Value": {
-        "Ref": "MediaBucket"
+        "Ref": "FileBucket"
       }
     },
-    "MediaTableName": {
+    "FileTableName": {
       "Value": {
-        "Ref": "MediaTable"
-      }
-    },
-    "VideoTopicArn": {
-      "Value": {
-        "Ref": "VideoTopic"
-      }
-    },
-    "VideoTopicName": {
-      "Value": {
-        "Fn::GetAtt": [
-          "VideoTopic",
-          "TopicName"
-        ]
-      }
-    },
-    "VideoRoleArn": {
-      "Value": {
-        "Fn::GetAtt": [
-          "VideoRole",
-          "Arn"
-        ]
+        "Ref": "FileTable"
       }
     }
   },
   "Resources": {
-    "MediaBucket": {
-      "Type": "AWS::S3::Bucket"
+    "FileBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "file-upload-bucket",
+        "CorsConfiguration": {
+          "CorsRules": [
+            {
+              "AllowedHeaders": [
+                "*"
+              ],
+              "AllowedMethods": [
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "HEAD"
+              ],
+              "AllowedOrigins": [
+                "*"
+              ],
+              "MaxAge": 3000
+            }
+          ]
+        }
+      }
     },
-    "MediaTable": {
+    "FileBucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "FileBucket"
+        },
+        "PolicyDocument": {
+          "Id": "FileBucketPolicy",
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Sid": "PublicReadForGetBucketObjects",
+              "Effect": "Allow",
+              "Principal": "*",
+              "Action": [
+                "s3:GetObject"
+              ],
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:s3:::",
+                    {
+                      "Ref": "FileBucket"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "FileTable": {
+      "Type": "AWS::DynamoDB::Table",
       "Properties": {
         "AttributeDefinitions": [
           {
-            "AttributeName": "name",
+            "AttributeName": "file_uuid",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "user_id",
             "AttributeType": "S"
           }
         ],
         "KeySchema": [
           {
-            "AttributeName": "name",
+            "AttributeName": "file_uuid",
             "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "user_id",
+            "KeyType": "RANGE"
           }
         ],
-        "ProvisionedThroughput": {
-          "ReadCapacityUnits": 5,
-          "WriteCapacityUnits": 5
-        }
-      },
-      "Type": "AWS::DynamoDB::Table"
-    },
-    "VideoTopic": {
-      "Type": "AWS::SNS::Topic"
-    },
-    "VideoRole": {
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "sts:AssumeRole"
-              ],
-              "Principal": {
-                "Service": [
-                  "rekognition.amazonaws.com"
-                ]
-              }
-            }
-          ]
-        },
-        "Policies": [
+        "BillingMode": "PAY_PER_REQUEST",
+        "GlobalSecondaryIndexes": [
           {
-            "PolicyName": "RekognitionPublish",
-            "PolicyDocument": {
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "sns:Publish"
-                  ],
-                  "Resource": [
-                    {
-                      "Ref": "VideoTopic"
-                    }
-                  ]
-                }
-              ]
+            "IndexName": "user_id_gsi",
+            "KeySchema": [
+              {
+                "AttributeName": "user_id",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
             }
           }
         ]
-      },
-      "Type": "AWS::IAM::Role"
+      }
     }
   }
 }
