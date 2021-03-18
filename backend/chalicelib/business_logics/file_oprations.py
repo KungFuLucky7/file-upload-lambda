@@ -5,7 +5,7 @@ from ..data_layers.db import db
 
 logger = logging.getLogger(APP_NAME)
 
-"""FileMetaData
+"""FileMetadata
     file_uuid
     filename
     file_size

@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "JSON schema for File Upload API",
+  "description": "This schema describes File Upload API Metadata POST JSON body.",
+  "type": "object",
+  "properties": {
+    "file_uuid": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The UUID for the File Metadata",
+      "minLength": 1,
+      "max_length": 36,
+      "pattern": "\\S+"
+    },
+    "filename": {
+      "type": "string",
+      "description": "The filename for the file metadata",
+      "minLength": 1,
+      "maxLength": 255,
+      "pattern": "\\S+"
+    },
+    "file_size": {
+      "type": "number",
+      "readOnly": true,
+      "description": "The file size for the file metadata"
+    },
+    "description": {
+      "type": "string",
+      "description": "The description for the file metadata",
+      "minLength": 1,
+      "maxLength": 2048,
+      "pattern": "\\S+"
+    },
+    "content_type": {
+      "type": "string",
+      "description": "The MIME content type for the file metadata",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "\\S+"
+    },
+    "media_uploaded": {
+      "type": "boolean",
+      "readOnly": true,
+      "default": false,
+      "description": "Boolean for whether the file has been uploaded"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "filename"
+  ]
+}
