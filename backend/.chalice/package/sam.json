@@ -601,7 +601,7 @@
     "FileBucket": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
-        "BucketName": "file-upload-bucket",
+        "BucketName": "file-upload-media-bucket",
         "CorsConfiguration": {
           "CorsRules": [
             {
