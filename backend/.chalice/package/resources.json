@@ -1,17 +1,26 @@
 {
   "Outputs": {
     "FileBucketName": {
+      "Description": "The file bucket name",
       "Value": {
         "Ref": "FileBucket"
       }
     },
     "FileTableName": {
+      "Description": "The file DynamoDB table name",
       "Value": {
         "Ref": "FileTable"
       }
     }
   },
   "Resources": {
+    "FileSecret": {
+      "Type": "AWS::SecretsManager::Secret",
+      "Properties": {
+        "Name": "FILE_UPLOAD_SECRETS",
+        "Description": "File upload secrets"
+      }
+    },
     "FileBucket": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
