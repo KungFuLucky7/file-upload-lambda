@@ -1,7 +1,8 @@
 import logging
 from uuid import UUID, uuid4
 
-from chalice import NotFoundError
+from chalice import BadRequestError, NotFoundError
+from requests_toolbelt import MultipartDecoder
 
 from ..constants import APP_NAME
 from ..data_layers.db import (
@@ -100,11 +101,67 @@ def delete_file_metadata(app, file_uuid):
     remove_file_metadata(file_uuid, user_id)
 
 
+def parse_multipart_object(headers, content):
+    for header in headers.split(";"):
+        # Only get the specific dropzone form values we need
+        if header == "form-data":
+            continue
+        elif "filename" in header:
+            filename_object = {
+                "filename": header.split('"')[1::2][0],
+                "content": content,
+            }
+            return filename_object
+        elif 'name="file"' in header:
+            continue
+        else:
+            header_name = header.split('"')[1::2][0]
+            metadata_object = {header_name: content}
+            return metadata_object
+
+
 def put_file(app, file_uuid):
     context = app.current_request.context
 
+    request_content_type = app.current_request.headers.get("content-type", "")
+    if not request_content_type.startswith("multipart/form-data"):
+        logger.debug(f"Request Content-Type: {request_content_type}")
+        raise BadRequestError(f"Content-Type header must be 'multipart/form-data'.")
+
     logger.info("Putting a file.", extra=context)
     user_id = app.current_request.context.get("authorizer", {}).get("principalId")
+
+    decoder = MultipartDecoder(
+        app.current_request.raw_body, app.current_request.headers["content-type"]
+    )
+    # Only parse the first line from "multipart/form-data"
+    part = decoder.parts[0]
+    content_disposition = part.headers.get(b"Content-Disposition", b"").decode("utf-8")
+    filename = (
+        content_disposition.split("; ")[2]
+        .replace("filename=", "")
+        .replace('"', "")
+        .strip()
+    )
+    logger.debug(f"filename: {filename}")
+    content_type = part.headers.get(b"Content-Type", b"").decode("utf-8")
+    logger.debug(f"content_type: {content_type}")
+    file = part.content
+    max_file_size = 104857600
+    file_size = len(file)
+    logger.debug(f"file_size: {file_size}")
+    item = read_file_metadata(file_uuid, user_id)
+    if not item:
+        raise NotFoundError("File metadata not found.")
+    logger.debug(f"file_metadata: {item}")
+
+    if item["filename"] != filename:
+        raise BadRequestError(
+            f"Filename '{filename}' is inconsistent with "
+            f"the filename '{item['filename']}' for the metadata."
+        )
+    elif not 0 < file_size <= max_file_size:
+        raise BadRequestError(f"File size must be > 0 and <= {max_file_size} bytes.")
 
 
 def get_file(app, file_uuid):

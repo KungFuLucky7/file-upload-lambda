@@ -31,15 +31,13 @@ app.debug = debug
 initialize_logging(debug=app.debug)
 logger.info(f"ENV: {environment}")
 logger.info(f"DEBUG: {app.debug}")
-
-
 logger.info("App creation complete . . .")
 
 
 @app.route("/")
 def index():
     return Response(
-        body={"File Upload API": "Hello world!"},
+        body={"File Upload API": "Front page"},
         status_code=200,
     )
 
@@ -157,9 +155,19 @@ def files_delete_file_metadata(file_uuid):
     )
 
 
-@app.route("/files/{file_uuid}", methods=["PUT"], authorizer=jwt_token_auth)
+@app.route(
+    "/files/{file_uuid}",
+    methods=["PUT"],
+    content_types=["multipart/form-data"],
+    authorizer=jwt_token_auth,
+)
 def files_put_file(file_uuid):
     put_file(app, file_uuid)
+
+    return Response(
+        body={"message": "File successfully uploaded."},
+        status_code=204,
+    )
 
 
 @app.route("/files/{file_uuid}", methods=["GET"], authorizer=jwt_token_auth)
