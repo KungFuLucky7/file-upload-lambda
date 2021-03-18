@@ -21,7 +21,7 @@ def query_file_metadata(user_id: str) -> list:
 
 
 def create_file_metadata(file_metadata: dict) -> dict:
-    logger.info("Creating file metadata.")
+    logger.info(f"Creating file metadata: {file_metadata}")
     table.put_item(Item=file_metadata)
 
     return file_metadata
@@ -29,7 +29,6 @@ def create_file_metadata(file_metadata: dict) -> dict:
 
 def read_file_metadata(file_uuid: str, user_id: str) -> dict:
     response = table.get_item(Key={"file_uuid": file_uuid, "user_id": user_id})
-    logger.info(response)
 
     return response.get("Item")
 
@@ -49,12 +48,12 @@ def update_file_metadata(
             ":description": file_metadata["description"],
             ":content_type": file_metadata["content_type"],
         },
-        ReturnValues="UPDATED_NEW",
+        ReturnValues="ALL_NEW",
     )
-    logger.info(response)
 
-    return response.get("Item")
+    return response.get("Attributes")
 
 
 def remove_file_metadata(file_uuid: str = None, user_id: str = None) -> None:
-    table.delete_item(Key={"file_uuid": file_uuid, "user_id": user_id})
+    response = table.delete_item(Key={"file_uuid": file_uuid, "user_id": user_id})
+    logger.debug(f"Delete response: {response}")
