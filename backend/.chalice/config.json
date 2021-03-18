@@ -9,7 +9,7 @@
       "environment_variables": {
         "DEBUG": "true",
         "ENV": "local",
-        "SECRET_NAME": "FILE_UPLOAD_SECRETS",
+        "SECRET_NAME": "file-upload-secrets",
         "DYNAMODB_TABLE_NAME": "file-upload-dynamodb-table",
         "DYNAMODB_TABLE_GSI": "file-upload-dynamodb-table-gsi"
       }
