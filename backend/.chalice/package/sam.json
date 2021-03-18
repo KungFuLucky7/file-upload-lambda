@@ -594,7 +594,7 @@
     "FileSecret": {
       "Type": "AWS::SecretsManager::Secret",
       "Properties": {
-        "Name": "FILE_UPLOAD_SECRETS",
+        "Name": "file-upload-secrets",
         "Description": "File upload secrets"
       }
     },
