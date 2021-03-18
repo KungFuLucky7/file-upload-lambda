@@ -58,7 +58,7 @@ Resources:
     Properties:
       Runtime: python3.8
       Handler: app.jwt_token_auth
-      CodeUri: s3://file-upload-deployment-bucket/d43708905905b9de1fe17d32d9992b68
+      CodeUri: s3://file-upload-deployment-bucket/64351caad12f7d685068ee4e7270bdc6
       Tags:
         aws-chalice: version=1.22.2:stage=dev:app=file-upload-lambda
       Tracing: PassThrough
@@ -343,7 +343,7 @@ Resources:
     Properties:
       Runtime: python3.8
       Handler: app.app
-      CodeUri: s3://file-upload-deployment-bucket/d43708905905b9de1fe17d32d9992b68
+      CodeUri: s3://file-upload-deployment-bucket/64351caad12f7d685068ee4e7270bdc6
       Tags:
         aws-chalice: version=1.22.2:stage=dev:app=file-upload-lambda
       Tracing: PassThrough
@@ -386,6 +386,10 @@ Resources:
     Properties:
       Name: FILE_UPLOAD_SECRETS
       Description: File upload secrets
+  DeploymentBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: file-upload-deployment-bucket
   FileBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -426,6 +430,7 @@ Resources:
   FileTable:
     Type: AWS::DynamoDB::Table
     Properties:
+      TableName: file-upload-dynamodb-table
       AttributeDefinitions:
       - AttributeName: file_uuid
         AttributeType: S
@@ -438,7 +443,7 @@ Resources:
         KeyType: RANGE
       BillingMode: PAY_PER_REQUEST
       GlobalSecondaryIndexes:
-      - IndexName: user_id_gsi
+      - IndexName: file-upload-dynamodb-table-gsi
         KeySchema:
         - AttributeName: user_id
           KeyType: HASH
