@@ -29,7 +29,7 @@ def list_file_metadata(app):
     context = app.current_request.context
 
     logger.info("Listing the file metadata.", extra=context)
-    user_id = "terrywon"
+    user_id = app.current_request.context.get("authorizer", {}).get("principalId")
     items = query_file_metadata(user_id)
 
     return items
@@ -39,7 +39,7 @@ def post_file_metadata(app):
     context = app.current_request.context
 
     logger.info("Posting a file metadata.", extra=context)
-    user_id = "terrywon"
+    user_id = app.current_request.context.get("authorizer", {}).get("principalId")
     file_metadata = app.current_request.json_body
     # Get the ID that API Gateway assigns to the API request.
     request_id = app.current_request.context.get("requestId")
@@ -48,11 +48,12 @@ def post_file_metadata(app):
         file_uuid = UUID(request_id).hex
     else:
         file_uuid = uuid4().hex
-    file_metadata["file_uuid"] = file_uuid
-    file_metadata["user_id"] = user_id
-    file_metadata["record_created"] = file_metadata[
-        "record_updated"
-    ] = get_current_timestamp()
+    file_metadata = {
+        **{"file_uuid": file_uuid, "user_id": user_id},
+        **file_metadata,
+        "record_created": get_current_timestamp(),
+        "record_updated": get_current_timestamp(),
+    }
     item = create_file_metadata(file_metadata)
 
     return item
@@ -62,7 +63,7 @@ def get_file_metadata(app, file_uuid):
     context = app.current_request.context
 
     logger.info("Getting a file metadata.", extra=context)
-    user_id = None
+    user_id = app.current_request.context.get("authorizer", {}).get("principalId")
     item = read_file_metadata(file_uuid, user_id)
 
     return item
@@ -72,9 +73,8 @@ def put_file_metadata(app, file_uuid):
     context = app.current_request.context
 
     logger.info("Putting a file metadata.", extra=context)
-    user_id = None
+    user_id = app.current_request.context.get("authorizer", {}).get("principalId")
     file_metadata = app.current_request.json_body
-    file_metadata["user_id"] = user_id
     file_metadata["record_updated"] = get_current_timestamp()
     item = update_file_metadata(file_uuid, user_id, file_metadata)
 
@@ -85,7 +85,7 @@ def delete_file_metadata(app, file_uuid):
     context = app.current_request.context
 
     logger.info("Deleting a file metadata.", extra=context)
-    user_id = None
+    user_id = app.current_request.context.get("authorizer", {}).get("principalId")
     remove_file_metadata(file_uuid, user_id)
 
 
@@ -93,9 +93,11 @@ def put_file(app, file_uuid):
     context = app.current_request.context
 
     logger.info("Putting a file.", extra=context)
+    user_id = app.current_request.context.get("authorizer", {}).get("principalId")
 
 
 def get_file(app, file_uuid):
     context = app.current_request.context
 
     logger.info("Getting a file.", extra=context)
+    user_id = app.current_request.context.get("authorizer", {}).get("principalId")

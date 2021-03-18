@@ -5,8 +5,8 @@ import json
 
 from botocore.exceptions import ClientError
 
-from backend.chalicelib.constants import AWS_REGION_NAME
 from .. import aws_session, secret_name
+from ..constants import AWS_REGION_NAME
 
 
 def get_secrets() -> dict:

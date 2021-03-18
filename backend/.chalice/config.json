@@ -10,6 +10,7 @@
         "DEBUG": "true",
         "ENV": "local",
         "SECRET_NAME": "file-upload-secrets",
+        "AUTH0_DOMAIN": "kungfulucky7.us.auth0.com",
         "DYNAMODB_TABLE_NAME": "file-upload-dynamodb-table",
         "DYNAMODB_TABLE_GSI": "file-upload-dynamodb-table-gsi"
       }
