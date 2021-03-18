@@ -598,12 +598,6 @@
         "Description": "File upload secrets"
       }
     },
-    "DeploymentBucket": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "BucketName": "file-upload-deployment-bucket"
-      }
-    },
     "FileBucket": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
