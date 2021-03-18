@@ -22,7 +22,9 @@
                   "Action": [
                     "secretsmanager:GetSecretValue"
                   ],
-                  "Resource": "arn:aws:secretsmanager:us-east-1:485673885023:secret:FILE_UPLOAD_SECRETS-ArJbDU"
+                  "Resource": {
+                    "Ref": "FileSecret"
+                  }
                 }
               ]
             },
