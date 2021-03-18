@@ -386,10 +386,6 @@ Resources:
     Properties:
       Name: FILE_UPLOAD_SECRETS
       Description: File upload secrets
-  DeploymentBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: file-upload-deployment-bucket
   FileBucket:
     Type: AWS::S3::Bucket
     Properties:
