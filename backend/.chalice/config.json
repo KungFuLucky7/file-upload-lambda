@@ -8,7 +8,10 @@
       "lambda_timeout": 300,
       "environment_variables": {
         "DEBUG": "true",
-        "ENV": "local"
+        "ENV": "local",
+        "SECRET_NAME": "FILE_UPLOAD_SECRETS",
+        "DYNAMODB_TABLE_NAME": "file-upload-dynamodb-table",
+        "DYNAMODB_TABLE_GSI": "file-upload-dynamodb-table-gsi"
       }
     }
   }

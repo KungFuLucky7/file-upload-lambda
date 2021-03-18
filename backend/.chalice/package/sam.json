@@ -661,6 +661,7 @@
     "FileTable": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
+        "TableName": "file-upload-dynamodb-table",
         "AttributeDefinitions": [
           {
             "AttributeName": "file_uuid",
@@ -684,7 +685,7 @@
         "BillingMode": "PAY_PER_REQUEST",
         "GlobalSecondaryIndexes": [
           {
-            "IndexName": "user_id_gsi",
+            "IndexName": "file-upload-dynamodb-table-gsi",
             "KeySchema": [
               {
                 "AttributeName": "user_id",

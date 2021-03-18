@@ -6,8 +6,11 @@ from .constants import APP_NAME, AWS_REGION_NAME
 
 debug = os.getenv("DEBUG", "false").lower() == "true"
 environment = os.getenv("ENV", "development").lower()
-secret_name = os.getenv("SECRET_NAME", f"{APP_NAME}-secret")
-dynamodb_table_name = os.getenv("DYNAMODB_TABLE_NAME", f"{APP_NAME}-dynamodb-table")
+secret_name = os.getenv("SECRET_NAME")
+dynamodb_table_name = os.getenv("DYNAMODB_TABLE_NAME", f"{APP_NAME,}-dynamodb-table")
+dynamodb_table_name_gsi = os.getenv(
+    "DYNAMODB_TABLE_NAME", f"{APP_NAME}-dynamodb-table-gsi"
+)
 
 # Create an AWS session that stores configuration state
 # and allows you to create service clients and resources
