@@ -25,7 +25,7 @@ Outputs:
 Resources:
   APIHandler:
     Properties:
-      CodeUri: s3://file-upload-deployment-bucket/c0e4feda2d0c9219c830b827c05ed6cc
+      CodeUri: ./deployment.zip
       Handler: app.app
       Layers:
       - Ref: ManagedLayer
@@ -145,7 +145,7 @@ Resources:
     Type: AWS::DynamoDB::Table
   JwtTokenAuth:
     Properties:
-      CodeUri: s3://file-upload-deployment-bucket/c0e4feda2d0c9219c830b827c05ed6cc
+      CodeUri: ./deployment.zip
       Handler: app.jwt_token_auth
       Layers:
       - Ref: ManagedLayer
@@ -178,7 +178,7 @@ Resources:
     Properties:
       CompatibleRuntimes:
       - python3.8
-      ContentUri: s3://file-upload-deployment-bucket/eb8883b9860f8f44ef526bb34f6c875f
+      ContentUri: ./layer-deployment.zip
       LayerName: file-upload-lambda-dev-managed-layer
     Type: AWS::Serverless::LayerVersion
   RestAPI:
@@ -225,7 +225,7 @@ Resources:
                   schema:
                     $ref: '#/definitions/Empty'
               security:
-              - jwt_token_auth: []
+              - jwt_token_auth: &id001 []
               x-amazon-apigateway-integration:
                 contentHandling: CONVERT_TO_TEXT
                 httpMethod: POST
@@ -247,7 +247,7 @@ Resources:
                   schema:
                     $ref: '#/definitions/Empty'
               security:
-              - jwt_token_auth: []
+              - jwt_token_auth: *id001
               x-amazon-apigateway-integration:
                 contentHandling: CONVERT_TO_TEXT
                 httpMethod: POST
@@ -275,7 +275,7 @@ Resources:
                   schema:
                     $ref: '#/definitions/Empty'
               security:
-              - jwt_token_auth: []
+              - jwt_token_auth: *id001
               x-amazon-apigateway-integration:
                 contentHandling: CONVERT_TO_TEXT
                 httpMethod: POST
@@ -302,7 +302,7 @@ Resources:
                   schema:
                     $ref: '#/definitions/Empty'
               security:
-              - jwt_token_auth: []
+              - jwt_token_auth: *id001
               x-amazon-apigateway-integration:
                 contentHandling: CONVERT_TO_TEXT
                 httpMethod: POST
@@ -329,7 +329,7 @@ Resources:
                   schema:
                     $ref: '#/definitions/Empty'
               security:
-              - jwt_token_auth: []
+              - jwt_token_auth: *id001
               x-amazon-apigateway-integration:
                 contentHandling: CONVERT_TO_TEXT
                 httpMethod: POST
@@ -357,7 +357,7 @@ Resources:
                   schema:
                     $ref: '#/definitions/Empty'
               security:
-              - jwt_token_auth: []
+              - jwt_token_auth: *id001
               x-amazon-apigateway-integration:
                 contentHandling: CONVERT_TO_TEXT
                 httpMethod: POST
@@ -384,7 +384,7 @@ Resources:
                   schema:
                     $ref: '#/definitions/Empty'
               security:
-              - jwt_token_auth: []
+              - jwt_token_auth: *id001
               x-amazon-apigateway-integration:
                 contentHandling: CONVERT_TO_TEXT
                 httpMethod: POST
