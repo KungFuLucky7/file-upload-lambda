@@ -404,7 +404,7 @@
             "/files/{file_uuid}": {
               "put": {
                 "consumes": [
-                  "application/json"
+                  "multipart/form-data"
                 ],
                 "produces": [
                   "application/json"
