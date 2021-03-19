@@ -2,25 +2,38 @@ Resources:
   DefaultRole:
     Type: AWS::IAM::Role
     Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRole
+            Principal:
+              Service: lambda.amazonaws.com
+            Sid: ''
       Policies:
-      - PolicyDocument:
-          Version: '2012-10-17'
-          Statement:
-          - Effect: Allow
-            Action:
-            - logs:CreateLogGroup
-            - logs:CreateLogStream
-            - logs:PutLogEvents
-            Resource: arn:*:logs:*:*:*
-          - Effect: Allow
-            Action:
-            - secretsmanager:GetSecretValue
-            Resource: arn:aws:secretsmanager:us-east-1:485673885023:secret:file-upload-secrets-KEi8PV
-          - Effect: Allow
-            Action:
-            - dynamodb:Query
-            - dynamodb:putItem
-            - dynamodb:updateItem
-            - dynamodb:deleteItem
-            Resource: arn:aws:dynamodb:us-east-1:485673885023:table/file-upload-dynamodb-table
-        PolicyName: DefaultRolePolicy
+        - PolicyName: DefaultRolePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: arn:*:logs:*:*:*
+              - Effect: Allow
+                Action:
+                  - xray:PutTraceSegments
+                  - xray:PutTelemetryRecords
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                - secretsmanager:GetSecretValue
+                Resource: arn:aws:secretsmanager:us-east-1:485673885023:secret:file-upload-secrets-KEi8PV
+              - Effect: Allow
+                Action:
+                - dynamodb:Query
+                - dynamodb:putItem
+                - dynamodb:updateItem
+                - dynamodb:deleteItem
+                Resource: arn:aws:dynamodb:us-east-1:485673885023:table/file-upload-dynamodb-table

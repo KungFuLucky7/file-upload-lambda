@@ -1,0 +1,112 @@
+Outputs:
+  FileBucketName:
+    Description: The file bucket name
+    Value:
+      Ref: FileBucket
+  FileTableName:
+    Description: The file DynamoDB table name
+    Value:
+      Ref: FileTable
+Resources:
+  DefaultRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRole
+            Principal:
+              Service: lambda.amazonaws.com
+            Sid: ''
+      Policies:
+        - PolicyName: DefaultRolePolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: arn:*:logs:*:*:*
+              - Effect: Allow
+                Action:
+                  - xray:PutTraceSegments
+                  - xray:PutTelemetryRecords
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                - secretsmanager:GetSecretValue
+                Resource: arn:aws:secretsmanager:us-east-1:485673885023:secret:file-upload-secrets-KEi8PV
+              - Effect: Allow
+                Action:
+                - dynamodb:Query
+                - dynamodb:putItem
+                - dynamodb:updateItem
+                - dynamodb:deleteItem
+                Resource: arn:aws:dynamodb:us-east-1:485673885023:table/file-upload-dynamodb-table
+  FileSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: file-upload-secrets
+      Description: File upload secrets
+  FileBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: file-upload-media-bucket
+      CorsConfiguration:
+        CorsRules:
+        - AllowedHeaders:
+          - "*"
+          AllowedMethods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - HEAD
+          AllowedOrigins:
+          - "*"
+          MaxAge: 3000
+  FileBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: FileBucket
+      PolicyDocument:
+        Id: FileBucketPolicy
+        Version: '2012-10-17'
+        Statement:
+        - Sid: PublicReadForGetBucketObjects
+          Effect: Allow
+          Principal: "*"
+          Action:
+          - s3:GetObject
+          Resource:
+            Fn::Join:
+            - ''
+            - - 'arn:aws:s3:::'
+              - Ref: FileBucket
+              - "/*"
+  FileTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: file-upload-dynamodb-table
+      AttributeDefinitions:
+      - AttributeName: file_uuid
+        AttributeType: S
+      - AttributeName: user_id
+        AttributeType: S
+      KeySchema:
+      - AttributeName: file_uuid
+        KeyType: HASH
+      - AttributeName: user_id
+        KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+      GlobalSecondaryIndexes:
+      - IndexName: file-upload-dynamodb-table-gsi
+        KeySchema:
+        - AttributeName: user_id
+          KeyType: HASH
+        Projection:
+          ProjectionType: ALL
