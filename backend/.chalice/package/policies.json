@@ -22,9 +22,7 @@
                   "Action": [
                     "secretsmanager:GetSecretValue"
                   ],
-                  "Resource": {
-                    "Ref": "FileSecret"
-                  }
+                  "Resource": "arn:aws:secretsmanager:us-east-1:485673885023:secret:file-upload-secrets-KEi8PV"
                 },
                 {
                   "Effect": "Allow",
@@ -34,9 +32,7 @@
                     "dynamodb:updateItem",
                     "dynamodb:deleteItem"
                   ],
-                  "Resource": {
-                    "Ref": "FileTable"
-                  }
+                  "Resource": "arn:aws:dynamodb:us-east-1:485673885023:table/file-upload-dynamodb-table"
                 }
               ]
             },

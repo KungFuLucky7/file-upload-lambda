@@ -62,8 +62,7 @@ def get_secrets() -> dict:
 
 
 # Get secrets from AWS Secrets Manager
-# secrets = get_secrets()
-secrets = {}
+secrets = get_secrets()
 
 if __name__ == "__main__":
     app_secrets = get_secrets()
