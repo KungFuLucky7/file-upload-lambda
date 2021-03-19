@@ -82,23 +82,10 @@
                 {
                   "Effect": "Allow",
                   "Action": [
-                    "secretsmanager:GetSecretValue"
+                    "xray:PutTraceSegments",
+                    "xray:PutTelemetryRecords"
                   ],
-                  "Resource": {
-                    "Ref": "FileSecret"
-                  }
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "dynamodb:Query",
-                    "dynamodb:putItem",
-                    "dynamodb:updateItem",
-                    "dynamodb:deleteItem"
-                  ],
-                  "Resource": {
-                    "Ref": "FileTable"
-                  }
+                  "Resource": "*"
                 }
               ]
             },
