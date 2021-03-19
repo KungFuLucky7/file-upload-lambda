@@ -2,7 +2,7 @@
   "version": "2.0",
   "app_name": "file-upload-lambda",
   "automatic_layer": true,
-  "xray": true,
+  "xray": false,
   "stages": {
     "local": {
       "api_gateway_stage": "api",

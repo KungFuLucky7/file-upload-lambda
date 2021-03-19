@@ -90,10 +90,23 @@
                 {
                   "Effect": "Allow",
                   "Action": [
-                    "xray:PutTraceSegments",
-                    "xray:PutTelemetryRecords"
+                    "secretsmanager:GetSecretValue"
                   ],
-                  "Resource": "*"
+                  "Resource": {
+                    "Ref": "FileSecret"
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:Query",
+                    "dynamodb:putItem",
+                    "dynamodb:updateItem",
+                    "dynamodb:deleteItem"
+                  ],
+                  "Resource": {
+                    "Ref": "FileTable"
+                  }
                 }
               ]
             },
@@ -111,7 +124,7 @@
         "Tags": {
           "aws-chalice": "version=1.22.2:stage=dev:app=file-upload-lambda"
         },
-        "Tracing": "Active",
+        "Tracing": "PassThrough",
         "Timeout": 60,
         "MemorySize": 128,
         "Layers": [
@@ -548,7 +561,7 @@
         "Tags": {
           "aws-chalice": "version=1.22.2:stage=dev:app=file-upload-lambda"
         },
-        "Tracing": "Active",
+        "Tracing": "PassThrough",
         "Timeout": 60,
         "MemorySize": 128,
         "Layers": [
@@ -601,46 +614,6 @@
             {
               "RestAPIId": {
                 "Ref": "RestAPI"
-              }
-            }
-          ]
-        }
-      }
-    },
-    "DefaultRolePolicy": {
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents"
-              ],
-              "Resource": "arn:*:logs:*:*:*"
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "secretsmanager:GetSecretValue"
-              ],
-              "Resource": {
-                "Ref": "FileSecret"
-              }
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "dynamodb:Query",
-                "dynamodb:putItem",
-                "dynamodb:updateItem",
-                "dynamodb:deleteItem"
-              ],
-              "Resource": {
-                "Ref": "FileTable"
               }
             }
           ]

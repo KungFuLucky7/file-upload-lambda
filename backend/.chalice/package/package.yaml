@@ -59,9 +59,17 @@ Resources:
             Resource: arn:*:logs:*:*:*
           - Effect: Allow
             Action:
-            - xray:PutTraceSegments
-            - xray:PutTelemetryRecords
-            Resource: '*'
+            - secretsmanager:GetSecretValue
+            Resource:
+              Ref: FileSecret
+          - Effect: Allow
+            Action:
+            - dynamodb:Query
+            - dynamodb:putItem
+            - dynamodb:updateItem
+            - dynamodb:deleteItem
+            Resource:
+              Ref: FileTable
         PolicyName: DefaultRolePolicy
   JwtTokenAuth:
     Type: AWS::Serverless::Function
@@ -391,31 +399,6 @@ Resources:
         - arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${RestAPIId}/*
         - RestAPIId:
             Ref: RestAPI
-  DefaultRolePolicy:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-        - Effect: Allow
-          Action:
-          - logs:CreateLogGroup
-          - logs:CreateLogStream
-          - logs:PutLogEvents
-          Resource: arn:*:logs:*:*:*
-        - Effect: Allow
-          Action:
-          - secretsmanager:GetSecretValue
-          Resource:
-            Ref: FileSecret
-        - Effect: Allow
-          Action:
-          - dynamodb:Query
-          - dynamodb:putItem
-          - dynamodb:updateItem
-          - dynamodb:deleteItem
-          Resource:
-            Ref: FileTable
   FileSecret:
     Type: AWS::SecretsManager::Secret
     Properties:
