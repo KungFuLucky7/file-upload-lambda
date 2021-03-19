@@ -47,8 +47,6 @@
   },
   "additionalProperties": false,
   "required": [
-    "filename",
-    "description",
-    "content_type"
+    "filename"
   ]
 }

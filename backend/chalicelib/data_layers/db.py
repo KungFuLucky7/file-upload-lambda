@@ -36,16 +36,27 @@ def update_file_metadata(
     user_id: str,
     file_metadata: dict,
 ) -> dict:
+    update_expression = "set filename=:filename"
+    expression_attribute_values = {":filename": file_metadata["filename"]}
+    if "file_size" in file_metadata:
+        update_expression += ", file_size=:file_size"
+        expression_attribute_values[":file_size"] = file_metadata["file_size"]
+    if "description" in file_metadata:
+        update_expression += ", description=:description"
+        expression_attribute_values[":description"] = file_metadata["description"]
+    if "content_type" in file_metadata:
+        update_expression += ", content_type=:content_type"
+        expression_attribute_values[":content_type"] = file_metadata["content_type"]
+    if "media_uploaded" in file_metadata:
+        update_expression += ", media_uploaded=:media_uploaded"
+        expression_attribute_values[":media_uploaded"] = file_metadata["media_uploaded"]
+    if "record_updated" in file_metadata:
+        update_expression += ", record_updated=:record_updated"
+        expression_attribute_values[":record_updated"] = file_metadata["record_updated"]
     response = table.update_item(
         Key={"file_uuid": file_uuid, "user_id": user_id},
-        UpdateExpression="set filename=:filename, "
-        "description=:description, "
-        "content_type=:content_type",
-        ExpressionAttributeValues={
-            ":filename": file_metadata["filename"],
-            ":description": file_metadata["description"],
-            ":content_type": file_metadata["content_type"],
-        },
+        UpdateExpression=update_expression,
+        ExpressionAttributeValues=expression_attribute_values,
         ReturnValues="ALL_NEW",
     )
 

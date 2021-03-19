@@ -12,7 +12,7 @@ from ..data_layers.db import (
     remove_file_metadata,
     update_file_metadata,
 )
-from ..data_layers.s3 import s3_upload_file
+from ..data_layers.s3 import s3_download_file, s3_upload_file
 from ..utils.helpers import get_current_timestamp
 
 logger = logging.getLogger(APP_NAME)
@@ -24,8 +24,8 @@ logger = logging.getLogger(APP_NAME)
     description
     content_type
     media_uploaded
-    created_on
-    updated_on
+    record_created
+    record_updated
 """
 
 
@@ -131,6 +131,10 @@ def put_file(app, file_uuid):
 
     logger.info("Putting a file.", extra=context)
     user_id = app.current_request.context.get("authorizer", {}).get("principalId")
+    file_metadata = read_file_metadata(file_uuid, user_id)
+    if not file_metadata:
+        raise NotFoundError("File metadata not found.")
+    logger.debug(f"file_metadata: {file_metadata}")
 
     decoder = MultipartDecoder(
         app.current_request.raw_body, app.current_request.headers["content-type"]
@@ -152,21 +156,26 @@ def put_file(app, file_uuid):
     max_file_size = 104857600
     file_size = len(file)
     logger.debug(f"file_size: {file_size}")
-    item = read_file_metadata(file_uuid, user_id)
-    if not item:
-        raise NotFoundError("File metadata not found.")
-    logger.debug(f"file_metadata: {item}")
 
-    if item["filename"] != filename:
+    if filename != file_metadata["filename"]:
         raise BadRequestError(
             f"Filename '{filename}' is inconsistent with "
-            f"the filename '{item['filename']}' for the metadata."
+            f"the filename '{file_metadata['filename']}' for the metadata."
         )
+    elif file_metadata["media_uploaded"] is True:
+        raise BadRequestError(f"File for UUID {file_uuid} has already been uploaded.")
     elif not 0 < file_size <= max_file_size:
         raise BadRequestError(f"File size must be > 0 and <= {max_file_size} bytes.")
 
     file_path = f"{file_uuid}/{filename}"
     s3_upload_file(file, file_path)
+
+    file_metadata["file_size"] = file_size
+    file_metadata["content_type"] = content_type
+    file_metadata["media_uploaded"] = True
+    file_metadata["record_updated"] = get_current_timestamp()
+    logger.info(f"Updating file metadata: {file_metadata}", extra=context)
+    update_file_metadata(file_uuid, user_id, file_metadata)
 
 
 def get_file(app, file_uuid):
@@ -174,3 +183,11 @@ def get_file(app, file_uuid):
 
     logger.info("Getting a file.", extra=context)
     user_id = app.current_request.context.get("authorizer", {}).get("principalId")
+    file_metadata = read_file_metadata(file_uuid, user_id)
+    if not file_metadata:
+        raise NotFoundError("File metadata not found.")
+    logger.debug(f"file_metadata: {file_metadata}")
+
+    file_path = f"{file_uuid}/{file_metadata['filename']}"
+    file = s3_download_file(file_path)
+    logger.debug(f"file: {file}, {type(file)}")
