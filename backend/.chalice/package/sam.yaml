@@ -82,9 +82,10 @@ Resources:
             Resource: arn:aws:secretsmanager:us-east-1:485673885023:secret:file-upload-secrets-KEi8PV
           - Action:
             - dynamodb:Query
-            - dynamodb:putItem
-            - dynamodb:updateItem
-            - dynamodb:deleteItem
+            - dynamodb:PutItem
+            - dynamodb:GetItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
             Effect: Allow
             Resource:
             - arn:aws:dynamodb:us-east-1:485673885023:table/file-upload-dynamodb-table
