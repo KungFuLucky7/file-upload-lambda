@@ -59,17 +59,9 @@ Resources:
             Resource: arn:*:logs:*:*:*
           - Effect: Allow
             Action:
-            - secretsmanager:GetSecretValue
-            Resource:
-              Ref: FileSecret
-          - Effect: Allow
-            Action:
-            - dynamodb:Query
-            - dynamodb:putItem
-            - dynamodb:updateItem
-            - dynamodb:deleteItem
-            Resource:
-              Ref: FileTable
+            - xray:PutTraceSegments
+            - xray:PutTelemetryRecords
+            Resource: '*'
         PolicyName: DefaultRolePolicy
   JwtTokenAuth:
     Type: AWS::Serverless::Function
@@ -79,7 +71,7 @@ Resources:
       CodeUri: s3://file-upload-deployment-bucket/8c5b6a546404d2df60243025f19eced0
       Tags:
         aws-chalice: version=1.22.2:stage=dev:app=file-upload-lambda
-      Tracing: PassThrough
+      Tracing: Active
       Timeout: 60
       MemorySize: 128
       Layers:
@@ -364,7 +356,7 @@ Resources:
       CodeUri: s3://file-upload-deployment-bucket/8c5b6a546404d2df60243025f19eced0
       Tags:
         aws-chalice: version=1.22.2:stage=dev:app=file-upload-lambda
-      Tracing: PassThrough
+      Tracing: Active
       Timeout: 60
       MemorySize: 128
       Layers:
@@ -399,6 +391,31 @@ Resources:
         - arn:${AWS::Partition}:execute-api:${AWS::Region}:${AWS::AccountId}:${RestAPIId}/*
         - RestAPIId:
             Ref: RestAPI
+  DefaultRolePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Action:
+          - logs:CreateLogGroup
+          - logs:CreateLogStream
+          - logs:PutLogEvents
+          Resource: arn:*:logs:*:*:*
+        - Effect: Allow
+          Action:
+          - secretsmanager:GetSecretValue
+          Resource:
+            Ref: FileSecret
+        - Effect: Allow
+          Action:
+          - dynamodb:Query
+          - dynamodb:putItem
+          - dynamodb:updateItem
+          - dynamodb:deleteItem
+          Resource:
+            Ref: FileTable
   FileSecret:
     Type: AWS::SecretsManager::Secret
     Properties:
