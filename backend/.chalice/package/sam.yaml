@@ -71,9 +71,7 @@ Resources:
             - logs:PutLogEvents
             Effect: Allow
             Resource: arn:*:logs:*:*:*
-          - Action:
-            - xray:PutTraceSegments
-            - xray:PutTelemetryRecords
+          - Action: xray:*
             Effect: Allow
             Resource: '*'
           - Action:
