@@ -85,9 +85,21 @@ def put_file_metadata(app, file_uuid):
 
     logger.info("Putting a file metadata.", extra=context)
     user_id = app.current_request.context.get("authorizer", {}).get("principalId")
-    file_metadata = app.current_request.json_body
-    file_metadata["record_updated"] = get_current_timestamp()
-    item = update_file_metadata(file_uuid, user_id, file_metadata)
+    file_metadata = read_file_metadata(file_uuid, user_id)
+    if not file_metadata:
+        raise NotFoundError("File metadata not found.")
+
+    if file_metadata["media_uploaded"] is True:
+        raise BadRequestError(
+            f"You can't update file for UUID {file_uuid} "
+            "because it has already been uploaded."
+        )
+
+    updated_file_metadata = app.current_request.json_body
+    updated_file_metadata["file_size"] = None
+    updated_file_metadata["media_uploaded"] = False
+    updated_file_metadata["record_updated"] = get_current_timestamp()
+    item = update_file_metadata(file_uuid, user_id, updated_file_metadata)
     if not item:
         raise NotFoundError("File metadata not found.")
 
@@ -100,25 +112,6 @@ def delete_file_metadata(app, file_uuid):
     logger.info("Deleting a file metadata.", extra=context)
     user_id = app.current_request.context.get("authorizer", {}).get("principalId")
     remove_file_metadata(file_uuid, user_id)
-
-
-def parse_multipart_object(headers, content):
-    for header in headers.split(";"):
-        # Only get the specific dropzone form values we need
-        if header == "form-data":
-            continue
-        elif "filename" in header:
-            filename_object = {
-                "filename": header.split('"')[1::2][0],
-                "content": content,
-            }
-            return filename_object
-        elif 'name="file"' in header:
-            continue
-        else:
-            header_name = header.split('"')[1::2][0]
-            metadata_object = {header_name: content}
-            return metadata_object
 
 
 def put_file(app, file_uuid):
