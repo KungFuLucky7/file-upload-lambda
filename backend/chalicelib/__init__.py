@@ -12,6 +12,7 @@ dynamodb_table_name = os.getenv("DYNAMODB_TABLE_NAME", f"{APP_NAME}-dynamodb-tab
 dynamodb_table_name_gsi = os.getenv(
     "DYNAMODB_TABLE_GSI", f"{APP_NAME}-dynamodb-table-gsi"
 )
+s3_file_bucket_name = os.getenv("S3_FILE_BUCKET_NAME", f"{APP_NAME}-media-bucket")
 
 # Create an AWS session that stores configuration state
 # and allows you to create service clients and resources

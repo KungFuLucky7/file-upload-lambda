@@ -1,13 +1,11 @@
 import logging
 
-import boto3
-
-from .. import dynamodb_table_name, dynamodb_table_name_gsi
+from .. import aws_session, dynamodb_table_name, dynamodb_table_name_gsi
 from ..constants import APP_NAME
 
 logger = logging.getLogger(APP_NAME)
 
-table = boto3.resource("dynamodb").Table(dynamodb_table_name)
+table = aws_session.resource("dynamodb").Table(dynamodb_table_name)
 
 
 def query_file_metadata(user_id: str) -> list:
@@ -56,4 +54,4 @@ def update_file_metadata(
 
 def remove_file_metadata(file_uuid: str = None, user_id: str = None) -> None:
     response = table.delete_item(Key={"file_uuid": file_uuid, "user_id": user_id})
-    logger.debug(f"Delete response: {response}")
+    logger.debug(f"DynamoDB delete_item() response: {response}")

@@ -12,6 +12,7 @@ from ..data_layers.db import (
     remove_file_metadata,
     update_file_metadata,
 )
+from ..data_layers.s3 import s3_upload_file
 from ..utils.helpers import get_current_timestamp
 
 logger = logging.getLogger(APP_NAME)
@@ -147,6 +148,7 @@ def put_file(app, file_uuid):
     content_type = part.headers.get(b"Content-Type", b"").decode("utf-8")
     logger.debug(f"content_type: {content_type}")
     file = part.content
+    logger.debug(f"file type: {type(file)}")
     max_file_size = 104857600
     file_size = len(file)
     logger.debug(f"file_size: {file_size}")
@@ -162,6 +164,9 @@ def put_file(app, file_uuid):
         )
     elif not 0 < file_size <= max_file_size:
         raise BadRequestError(f"File size must be > 0 and <= {max_file_size} bytes.")
+
+    file_path = f"{file_uuid}/{filename}"
+    s3_upload_file(file, file_path)
 
 
 def get_file(app, file_uuid):
