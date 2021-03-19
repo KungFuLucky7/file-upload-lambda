@@ -86,6 +86,27 @@
                     "logs:PutLogEvents"
                   ],
                   "Resource": "arn:*:logs:*:*:*"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "secretsmanager:GetSecretValue"
+                  ],
+                  "Resource": {
+                    "Ref": "FileSecret"
+                  }
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:Query",
+                    "dynamodb:putItem",
+                    "dynamodb:updateItem",
+                    "dynamodb:deleteItem"
+                  ],
+                  "Resource": {
+                    "Ref": "FileTable"
+                  }
                 }
               ]
             },
