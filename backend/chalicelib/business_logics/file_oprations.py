@@ -134,7 +134,6 @@ def put_file(app, file_uuid):
     file_metadata = read_file_metadata(file_uuid, user_id)
     if not file_metadata:
         raise NotFoundError("File metadata not found.")
-    logger.debug(f"file_metadata: {file_metadata}")
 
     decoder = MultipartDecoder(
         app.current_request.raw_body, app.current_request.headers["content-type"]
@@ -186,8 +185,8 @@ def get_file(app, file_uuid):
     file_metadata = read_file_metadata(file_uuid, user_id)
     if not file_metadata:
         raise NotFoundError("File metadata not found.")
-    logger.debug(f"file_metadata: {file_metadata}")
 
     file_path = f"{file_uuid}/{file_metadata['filename']}"
     file = s3_download_file(file_path)
-    logger.debug(f"file: {file}, {type(file)}")
+
+    return file, file_metadata

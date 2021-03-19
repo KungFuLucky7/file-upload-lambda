@@ -14,8 +14,8 @@ def s3_upload_file(file, file_path):
     logger.debug(f"S3 put_object() response: {response}")
 
 
-def s3_download_file(file_path, file_name):
-    response = s3.get_object(Bucket=s3_file_bucket_name, Key=f"{file_path}/{file_name}")
+def s3_download_file(file_path):
+    response = s3.get_object(Bucket=s3_file_bucket_name, Key=file_path)
     logger.debug(f"S3 get_object() response: {response}")
 
-    return response
+    return response.get("Body", b"").read()

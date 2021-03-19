@@ -166,10 +166,18 @@ def files_put_file(file_uuid):
 
     return Response(
         body={"message": "File successfully uploaded."},
-        status_code=204,
+        status_code=200,
     )
 
 
 @app.route("/files/{file_uuid}", methods=["GET"], authorizer=jwt_token_auth)
 def files_get_file(file_uuid):
-    get_file(app, file_uuid)
+    file, file_metadata = get_file(app, file_uuid)
+
+    return Response(
+        body=file,
+        headers={
+            "Content-Disposition": f"attachment; filename={file_metadata['filename']}",
+            "Content-Type": file_metadata["content_type"],
+        },
+    )
