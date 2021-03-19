@@ -41,14 +41,19 @@ Resources:
                 Resource: arn:aws:secretsmanager:us-east-1:485673885023:secret:file-upload-secrets-KEi8PV
               - Effect: Allow
                 Action:
-                - dynamodb:Query
-                - dynamodb:PutItem
-                - dynamodb:GetItem
-                - dynamodb:UpdateItem
-                - dynamodb:DeleteItem
+                  - dynamodb:Query
+                  - dynamodb:PutItem
+                  - dynamodb:GetItem
+                  - dynamodb:UpdateItem
+                  - dynamodb:DeleteItem
                 Resource:
                   - arn:aws:dynamodb:us-east-1:485673885023:table/file-upload-dynamodb-table
                   - arn:aws:dynamodb:us-east-1:485673885023:table/file-upload-dynamodb-table/index/file-upload-dynamodb-table-gsi
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                Resource: arn:aws:s3:::file-upload-media-bucket
   FileSecret:
     Type: AWS::SecretsManager::Secret
     Properties:
