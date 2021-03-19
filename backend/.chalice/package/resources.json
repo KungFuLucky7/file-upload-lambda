@@ -14,51 +14,6 @@
     }
   },
   "Resources": {
-    "DefaultRole": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "Policies": [
-          {
-            "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "logs:CreateLogGroup",
-                    "logs:CreateLogStream",
-                    "logs:PutLogEvents"
-                  ],
-                  "Resource": "arn:*:logs:*:*:*"
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "secretsmanager:GetSecretValue"
-                  ],
-                  "Resource": {
-                    "Ref": "FileSecret"
-                  }
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "dynamodb:Query",
-                    "dynamodb:putItem",
-                    "dynamodb:updateItem",
-                    "dynamodb:deleteItem"
-                  ],
-                  "Resource": {
-                    "Ref": "FileTable"
-                  }
-                }
-              ]
-            },
-            "PolicyName": "DefaultRolePolicy"
-          }
-        ]
-      }
-    },
     "FileSecret": {
       "Type": "AWS::SecretsManager::Secret",
       "Properties": {
