@@ -86,7 +86,9 @@ Resources:
             - dynamodb:updateItem
             - dynamodb:deleteItem
             Effect: Allow
-            Resource: arn:aws:dynamodb:us-east-1:485673885023:table/file-upload-dynamodb-table
+            Resource:
+            - arn:aws:dynamodb:us-east-1:485673885023:table/file-upload-dynamodb-table
+            - arn:aws:dynamodb:us-east-1:485673885023:table/file-upload-dynamodb-table/index/file-upload-dynamodb-table-gsi
           Version: '2012-10-17'
         PolicyName: DefaultRolePolicy
     Type: AWS::IAM::Role

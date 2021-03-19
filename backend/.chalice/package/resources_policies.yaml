@@ -45,7 +45,9 @@ Resources:
                 - dynamodb:putItem
                 - dynamodb:updateItem
                 - dynamodb:deleteItem
-                Resource: arn:aws:dynamodb:us-east-1:485673885023:table/file-upload-dynamodb-table
+                Resource:
+                  - arn:aws:dynamodb:us-east-1:485673885023:table/file-upload-dynamodb-table
+                  - arn:aws:dynamodb:us-east-1:485673885023:table/file-upload-dynamodb-table/index/file-upload-dynamodb-table-gsi
   FileSecret:
     Type: AWS::SecretsManager::Secret
     Properties:
