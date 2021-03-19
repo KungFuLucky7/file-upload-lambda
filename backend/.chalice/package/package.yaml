@@ -25,7 +25,7 @@ Outputs:
 Resources:
   APIHandler:
     Properties:
-      CodeUri: s3://file-upload-deployment-bucket/decb5c0a9565247432acb93f4cc8ab3e
+      CodeUri: s3://file-upload-deployment-bucket/525cd959a4f169ff152b986b292bb1a1
       Handler: app.app
       Layers:
       - Ref: ManagedLayer
@@ -163,7 +163,7 @@ Resources:
     Type: AWS::DynamoDB::Table
   JwtTokenAuth:
     Properties:
-      CodeUri: s3://file-upload-deployment-bucket/decb5c0a9565247432acb93f4cc8ab3e
+      CodeUri: s3://file-upload-deployment-bucket/525cd959a4f169ff152b986b292bb1a1
       Handler: app.jwt_token_auth
       Layers:
       - Ref: ManagedLayer
