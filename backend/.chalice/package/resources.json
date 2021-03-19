@@ -1,13 +1,5 @@
 {
   "Outputs": {
-    "FileSecretArn": {
-      "Value": {
-        "Fn::GetAtt": [
-          "FileSecret",
-          "Arn"
-        ]
-      }
-    },
     "FileBucketName": {
       "Description": "The file bucket name",
       "Value": {
