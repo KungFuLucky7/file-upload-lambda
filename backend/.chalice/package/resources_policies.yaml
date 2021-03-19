@@ -42,9 +42,10 @@ Resources:
               - Effect: Allow
                 Action:
                 - dynamodb:Query
-                - dynamodb:putItem
-                - dynamodb:updateItem
-                - dynamodb:deleteItem
+                - dynamodb:PutItem
+                - dynamodb:GetItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
                 Resource:
                   - arn:aws:dynamodb:us-east-1:485673885023:table/file-upload-dynamodb-table
                   - arn:aws:dynamodb:us-east-1:485673885023:table/file-upload-dynamodb-table/index/file-upload-dynamodb-table-gsi
