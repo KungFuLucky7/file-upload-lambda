@@ -124,7 +124,7 @@
         "Tags": {
           "aws-chalice": "version=1.22.2:stage=dev:app=file-upload-lambda"
         },
-        "Tracing": "PassThrough",
+        "Tracing": "Active",
         "Timeout": 60,
         "MemorySize": 128,
         "Layers": [
@@ -561,7 +561,7 @@
         "Tags": {
           "aws-chalice": "version=1.22.2:stage=dev:app=file-upload-lambda"
         },
-        "Tracing": "PassThrough",
+        "Tracing": "Active",
         "Timeout": 60,
         "MemorySize": 128,
         "Layers": [
