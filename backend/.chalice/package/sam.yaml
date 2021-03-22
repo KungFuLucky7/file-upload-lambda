@@ -134,11 +134,6 @@ Resources:
           Sid: PublicReadForGetBucketObjects
         Version: '2012-10-17'
     Type: AWS::S3::BucketPolicy
-  FileSecret:
-    Properties:
-      Description: File upload secrets
-      Name: file-upload-secrets
-    Type: AWS::SecretsManager::Secret
   FileTable:
     Properties:
       AttributeDefinitions:

@@ -8,11 +8,6 @@ Outputs:
     Value:
       Ref: FileTable
 Resources:
-  FileSecret:
-    Type: AWS::SecretsManager::Secret
-    Properties:
-      Name: file-upload-secrets
-      Description: File upload secrets
   FileBucket:
     Type: AWS::S3::Bucket
     Properties:
