@@ -21,8 +21,8 @@ yarn-error.log*
 
 # AWS Chalice
 */.chalice/deployments/
-*/.chalice/package/deployment.zip
-*/.chalice/package/layer-deployment.zip
+*/.chalice/packaged/deployment.zip
+*/.chalice/packaged/layer-deployment.zip
 */.chalice/venv/
 
 .env
