@@ -20,9 +20,9 @@ yarn-debug.log*
 yarn-error.log*
 
 # AWS Chalice
+deployment.zip
+layer-deployment.zip
 */.chalice/deployments/
-*/.chalice/packaged/deployment.zip
-*/.chalice/packaged/layer-deployment.zip
 */.chalice/venv/
 
 .env
