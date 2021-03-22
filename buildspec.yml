@@ -5,8 +5,8 @@ artifacts:
 phases:
   build:
     commands:
-    - cd backend/.chalice/packaged
-    - chalice package --merge-template resource_policies.yaml --template-format yaml . --stage dev
+    - cd backend/
+    - chalice package --merge-template .chalice/packaged/resource_policies.yaml --template-format yaml . --stage dev
     - aws cloudformation package --template-file sam.yaml --s3-bucket ${APP_S3_BUCKET} --output-template-file transformed.yaml
   install:
     commands:
