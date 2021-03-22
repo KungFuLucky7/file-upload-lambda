@@ -16,4 +16,3 @@ phases:
     - chalice package /tmp/packaged
     - chalice package --stage dev --merge-template resource_policies.yaml /tmp/packaged
     - aws cloudformation package --template-file /tmp/packaged/sam.json --s3-bucket ${APP_S3_BUCKET} --output-template-file ../transformed.yaml
-    - aws cloudformation deploy --template-file ../transformed.yaml --stack-name ${APP_STACK_NAME} --capabilities CAPABILITY_IAM
