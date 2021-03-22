@@ -14,4 +14,4 @@ phases:
     commands:
     - cd backend/
     - chalice package --stage dev --merge-template resource_policies.yaml /tmp/packaged
-    - aws cloudformation package --template-file /tmp/packaged/sam.json --s3-bucket ${APP_S3_BUCKET} --output-template-file ../transformed.yaml
+    - aws cloudformation package --template-file /tmp/packaged/sam.yaml --s3-bucket ${APP_S3_BUCKET} --output-template-file ../transformed.yaml
