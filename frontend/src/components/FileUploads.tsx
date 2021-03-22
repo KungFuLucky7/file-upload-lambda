@@ -9,12 +9,12 @@ import {
   Grid,
   Header,
   Icon,
-  Input,
   Image,
+  Input,
   Loader
 } from 'semantic-ui-react'
 
-import { createTodo, deleteTodo, getTodos, patchTodo } from '../api/todos-api'
+import { createTodo, deleteTodo, getTodos, patchTodo } from '../api/fileUploadApi'
 import Auth from '../auth/Auth'
 import { Todo } from '../types/Todo'
 
@@ -29,7 +29,7 @@ interface TodosState {
   loadingTodos: boolean
 }
 
-export class Todos extends React.PureComponent<TodosProps, TodosState> {
+export class FileUploads extends React.PureComponent<TodosProps, TodosState> {
   state: TodosState = {
     todos: [],
     newTodoName: '',

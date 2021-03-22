@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { Form, Button } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react'
 import Auth from '../auth/Auth'
-import { getUploadUrl, uploadFile } from '../api/todos-api'
+import { getUploadUrl, uploadFile } from '../api/fileUploadApi'
 
 enum UploadState {
   NoUpload,
@@ -23,7 +23,7 @@ interface EditTodoState {
   uploadState: UploadState
 }
 
-export class EditTodo extends React.PureComponent<
+export class EditFile extends React.PureComponent<
   EditTodoProps,
   EditTodoState
 > {
