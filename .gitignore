@@ -24,3 +24,5 @@ yarn-error.log*
 */.chalice/package/deployment.zip
 */.chalice/package/layer-deployment.zip
 */.chalice/venv/
+
+.env
