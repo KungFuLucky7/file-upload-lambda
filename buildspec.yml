@@ -5,13 +5,14 @@ artifacts:
 phases:
   build:
     commands:
+    - cd backend/
     - chalice package /tmp/packaged
-    - aws cloudformation package --template-file /tmp/packaged/sam.json --s3-bucket
-      ${APP_S3_BUCKET} --output-template-file transformed.yaml
+    - chalice package --stage dev --merge-template resource_policies.yaml /tmp/packaged
+    - aws cloudformation package --template-file /tmp/packaged/sam.json --s3-bucket ${APP_S3_BUCKET} --output-template-file transformed.yaml
   install:
     commands:
     - pip install 'chalice>=1.22.0,<1.23.0'
-    - pip install -r requirements.txt
+    - pip install -r backend/requirements.txt
     runtime-versions:
       python: '3.8'
 version: '0.2'
