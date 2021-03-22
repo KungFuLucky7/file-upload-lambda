@@ -4,6 +4,20 @@
   "automatic_layer": true,
   "xray": true,
   "stages": {
+    "dev": {
+      "api_gateway_stage": "api",
+      "lambda_memory_size": 256,
+      "lambda_timeout": 300,
+      "environment_variables": {
+        "DEBUG": "true",
+        "ENV": "dev",
+        "SECRET_NAME": "file-upload-secrets",
+        "AUTH0_DOMAIN": "kungfulucky7.us.auth0.com",
+        "DYNAMODB_TABLE_NAME": "file-upload-dynamodb-table",
+        "DYNAMODB_TABLE_GSI": "file-upload-dynamodb-table-gsi",
+        "S3_FILE_BUCKET_NAME": "file-upload-media-bucket"
+      }
+    },
     "local": {
       "api_gateway_stage": "api",
       "lambda_timeout": 300,
