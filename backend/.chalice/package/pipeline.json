@@ -4,7 +4,7 @@
     "ApplicationName": {
       "Default": "file-upload-lambda",
       "Type": "String",
-      "Description": "Name of the application"
+      "Description": "Enter the name of your application"
     },
     "CodeBuildImage": {
       "Default": "aws/codebuild/amazonlinux2-x86_64-standard:3.0",

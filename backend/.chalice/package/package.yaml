@@ -25,11 +25,20 @@ Outputs:
 Resources:
   APIHandler:
     Properties:
-      CodeUri: s3://file-upload-deployment-bucket/525cd959a4f169ff152b986b292bb1a1
+      CodeUri: s3://file-upload-deployment-bucket/51b9dbe0512692431a44fd62429779e4
+      Environment:
+        Variables:
+          AUTH0_DOMAIN: kungfulucky7.us.auth0.com
+          DEBUG: 'true'
+          DYNAMODB_TABLE_GSI: file-upload-dynamodb-table-gsi
+          DYNAMODB_TABLE_NAME: file-upload-dynamodb-table
+          ENV: dev
+          S3_FILE_BUCKET_NAME: file-upload-media-bucket
+          SECRET_NAME: file-upload-secrets
       Handler: app.app
       Layers:
       - Ref: ManagedLayer
-      MemorySize: 128
+      MemorySize: 256
       Role:
         Fn::GetAtt:
         - DefaultRole
@@ -37,7 +46,7 @@ Resources:
       Runtime: python3.8
       Tags:
         aws-chalice: version=1.22.2:stage=dev:app=file-upload-lambda
-      Timeout: 60
+      Timeout: 300
       Tracing: Active
     Type: AWS::Serverless::Function
   APIHandlerInvokePermission:
@@ -121,7 +130,6 @@ Resources:
         Id: FileBucketPolicy
         Statement:
         - Action:
-          - s3:PutObject
           - s3:GetObject
           Effect: Allow
           Principal: '*'
@@ -158,11 +166,20 @@ Resources:
     Type: AWS::DynamoDB::Table
   JwtTokenAuth:
     Properties:
-      CodeUri: s3://file-upload-deployment-bucket/525cd959a4f169ff152b986b292bb1a1
+      CodeUri: s3://file-upload-deployment-bucket/51b9dbe0512692431a44fd62429779e4
+      Environment:
+        Variables:
+          AUTH0_DOMAIN: kungfulucky7.us.auth0.com
+          DEBUG: 'true'
+          DYNAMODB_TABLE_GSI: file-upload-dynamodb-table-gsi
+          DYNAMODB_TABLE_NAME: file-upload-dynamodb-table
+          ENV: dev
+          S3_FILE_BUCKET_NAME: file-upload-media-bucket
+          SECRET_NAME: file-upload-secrets
       Handler: app.jwt_token_auth
       Layers:
       - Ref: ManagedLayer
-      MemorySize: 128
+      MemorySize: 256
       Role:
         Fn::GetAtt:
         - DefaultRole
@@ -170,7 +187,7 @@ Resources:
       Runtime: python3.8
       Tags:
         aws-chalice: version=1.22.2:stage=dev:app=file-upload-lambda
-      Timeout: 60
+      Timeout: 300
       Tracing: Active
     Type: AWS::Serverless::Function
   JwtTokenAuthInvokePermission:
@@ -191,7 +208,7 @@ Resources:
     Properties:
       CompatibleRuntimes:
       - python3.8
-      ContentUri: s3://file-upload-deployment-bucket/eb8883b9860f8f44ef526bb34f6c875f
+      ContentUri: s3://file-upload-deployment-bucket/42b524812f7b427aa76bc10bfa3008de
       LayerName: file-upload-lambda-dev-managed-layer
     Type: AWS::Serverless::LayerVersion
   RestAPI:
@@ -381,9 +398,9 @@ Resources:
                 type: aws_proxy
                 uri:
                   Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${APIHandler.Arn}/invocations
-            put:
+            post:
               consumes:
-              - multipart/form-data
+              - application/json
               parameters:
               - in: path
                 name: file_uuid
