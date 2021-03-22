@@ -55,7 +55,6 @@ def post_file_metadata(app):
         **{"file_uuid": file_uuid, "user_id": user_id},
         **file_metadata,
         **{
-            "file_size": None,
             "record_created": current_timestamp,
             "record_updated": current_timestamp,
         },
@@ -87,7 +86,6 @@ def put_file_metadata(app, file_uuid):
         raise NotFoundError("File metadata not found.")
 
     updated_file_metadata = app.current_request.json_body
-    updated_file_metadata["file_size"] = None
     updated_file_metadata["record_updated"] = get_current_timestamp()
     item = update_file_metadata(file_uuid, user_id, updated_file_metadata)
     if not item:
