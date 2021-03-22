@@ -37,12 +37,6 @@
       "minLength": 1,
       "maxLength": 256,
       "pattern": "\\S+"
-    },
-    "media_uploaded": {
-      "type": "boolean",
-      "readOnly": true,
-      "default": false,
-      "description": "Boolean for whether the file has been uploaded"
     }
   },
   "additionalProperties": false,

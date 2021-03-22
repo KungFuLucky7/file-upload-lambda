@@ -12,11 +12,11 @@ from chalice import (
 from chalicelib import debug, environment
 from chalicelib.business_logics.file_oprations import (
     delete_file_metadata,
-    get_file,
     get_file_metadata,
+    get_file_url,
     list_file_metadata,
     post_file_metadata,
-    put_file,
+    post_file_url,
     put_file_metadata,
 )
 from chalicelib.constants import APP_NAME
@@ -36,10 +36,7 @@ logger.info("App creation complete . . .")
 
 @app.route("/")
 def index():
-    return Response(
-        body={"File Upload API": "Front page"},
-        status_code=200,
-    )
+    return Response(body={"File Upload API": "Front page"}, status_code=200)
 
 
 @app.middleware("all")
@@ -54,15 +51,9 @@ def middleware(event, get_response):
             response.body["message"] = response.body.pop("Message")
     except BadRequestError as bre:
         logger.exception(bre)
-        return Response(
-            body={"message": str(bre)},
-            status_code=400,
-        )
+        return Response(body={"message": str(bre)}, status_code=400)
     except ChaliceUnhandledError as cue:
-        return Response(
-            body={"message": str(cue)},
-            status_code=500,
-        )
+        return Response(body={"message": str(cue)}, status_code=500)
 
     return response
 
@@ -99,85 +90,55 @@ def ping():
     context = app.current_request.context
     logger.info("Pong for ping successfully retrieved.", extra=context)
 
-    return Response(
-        body={"pong": "From File Upload API"},
-        status_code=200,
-    )
+    return Response(body={"pong": "From File Upload API"}, status_code=200)
 
 
 @app.route("/files/metadata", methods=["GET"], authorizer=jwt_token_auth)
 def files_list_file_metadata():
     items = list_file_metadata(app)
 
-    return Response(
-        body=items,
-        status_code=200,
-    )
+    return Response(body=items, status_code=200)
 
 
 @app.route("/files/metadata", methods=["POST"], authorizer=jwt_token_auth)
 def files_post_file_metadata():
     item = post_file_metadata(app)
 
-    return Response(
-        body=item,
-        status_code=201,
-    )
+    return Response(body=item, status_code=201)
 
 
 @app.route("/files/metadata/{file_uuid}", methods=["GET"], authorizer=jwt_token_auth)
 def files_get_file_metadata(file_uuid):
     item = get_file_metadata(app, file_uuid)
 
-    return Response(
-        body=item,
-        status_code=200,
-    )
+    return Response(body=item, status_code=200)
 
 
 @app.route("/files/metadata/{file_uuid}", methods=["PUT"], authorizer=jwt_token_auth)
 def files_put_file_metadata(file_uuid):
     item = put_file_metadata(app, file_uuid)
 
-    return Response(
-        body=item,
-        status_code=200,
-    )
+    return Response(body=item, status_code=200)
 
 
 @app.route("/files/metadata/{file_uuid}", methods=["DELETE"], authorizer=jwt_token_auth)
 def files_delete_file_metadata(file_uuid):
     delete_file_metadata(app, file_uuid)
 
-    return Response(
-        body={},
-        status_code=204,
-    )
+    return Response(body={}, status_code=204)
 
 
-@app.route(
-    "/files/{file_uuid}",
-    methods=["PUT"],
-    content_types=["multipart/form-data"],
-    authorizer=jwt_token_auth,
-)
-def files_put_file(file_uuid):
-    put_file(app, file_uuid)
+@app.route("/files/{file_uuid}", methods=["POST"], authorizer=jwt_token_auth)
+def files_post_file(file_uuid):
+    upload_url = post_file_url(app, file_uuid)
 
-    return Response(
-        body={"message": "File successfully uploaded."},
-        status_code=200,
-    )
+    return Response(body=upload_url, status_code=202)
 
 
 @app.route("/files/{file_uuid}", methods=["GET"], authorizer=jwt_token_auth)
 def files_get_file(file_uuid):
-    file, file_metadata = get_file(app, file_uuid)
+    download_url = get_file_url(app, file_uuid)
 
     return Response(
-        body=file,
-        headers={
-            "Content-Disposition": f"attachment; filename={file_metadata['filename']}",
-            "Content-Type": file_metadata["content_type"],
-        },
+        body=download_url, headers={"Location": download_url}, status_code=302
     )
