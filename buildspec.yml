@@ -2,7 +2,6 @@ version: '0.2'
 artifacts:
   files:
   - transformed.yaml
-  base-directory: backend/
   discard-paths: yes
 phases:
   install:
