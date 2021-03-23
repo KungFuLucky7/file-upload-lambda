@@ -1,0 +1,21 @@
+language: python
+python:
+  - '3.8'
+branches:
+  only:
+  - master
+install:
+  - pip install awscli
+  - pip install chalice
+script:
+  - cd backend/
+  - chalice package --stage dev --merge-template resource_policies.yaml --template-format yaml .
+  - aws cloudformation package --template-file sam.yaml --s3-bucket $AWS_S3_BUCKET --output-template-file ../transformed.yaml
+deploy:
+  provider: cloudformation
+  access_key_id: $AWS_ACCESS_KEY_ID
+  secret_access_key: $AWS_SECRET_ACCESS_KEY
+  region: us-east-1
+  template: transformed.yaml
+  stack_name: $AWS_STACK_NAME
+  edge: true # opt in to dpl v2
