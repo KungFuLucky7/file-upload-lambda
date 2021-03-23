@@ -49,6 +49,7 @@ Resources:
                   - arn:aws:dynamodb:us-east-1:485673885023:table/file-upload-dynamodb-table/index/file-upload-dynamodb-table-gsi
               - Effect: Allow
                 Action:
+                  - s3:ListBucket
                   - s3:PutObject
                   - s3:GetObject
                 Resource: arn:aws:s3:::file-upload-media-bucket
