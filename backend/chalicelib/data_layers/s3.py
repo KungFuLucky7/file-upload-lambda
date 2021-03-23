@@ -27,7 +27,7 @@ def s3_get_upload_url(file_path, content_type=None):
 
         return presigned_url
     except ClientError as e:
-        logging.error(e)
+        logger.error(e)
         raise
 
 
@@ -49,5 +49,17 @@ def s3_get_download_url(file_path, filename, content_type=None):
 
         return presigned_url
     except ClientError as e:
-        logging.error(e)
+        logger.error(e)
+        raise
+
+
+def head_file(file_path):
+    logger.info("Getting the metadata for a file in S3.")
+    try:
+        head_file_metadata = s3.head_object(Bucket=s3_file_bucket_name, Key=file_path)
+        logger.debug(f"head_file_metadata: {head_file_metadata}")
+
+        return head_file_metadata
+    except ClientError as e:
+        logger.error(e)
         raise

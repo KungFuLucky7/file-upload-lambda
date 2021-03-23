@@ -25,7 +25,7 @@ Outputs:
 Resources:
   APIHandler:
     Properties:
-      CodeUri: s3://file-upload-deployment-bucket/5d9afeb2df4c083dde8af0714f2fa499
+      CodeUri: s3://file-upload-deployment-bucket/423e7421045318a1b76e35275791fb62
       Environment:
         Variables:
           AUTH0_DOMAIN: kungfulucky7.us.auth0.com
@@ -166,7 +166,7 @@ Resources:
     Type: AWS::DynamoDB::Table
   JwtTokenAuth:
     Properties:
-      CodeUri: s3://file-upload-deployment-bucket/5d9afeb2df4c083dde8af0714f2fa499
+      CodeUri: s3://file-upload-deployment-bucket/423e7421045318a1b76e35275791fb62
       Environment:
         Variables:
           AUTH0_DOMAIN: kungfulucky7.us.auth0.com

@@ -1,6 +1,7 @@
 import logging
 from uuid import UUID, uuid4
 
+from botocore.exceptions import ClientError
 from chalice import NotFoundError
 
 from ..constants import APP_NAME
@@ -11,7 +12,7 @@ from ..data_layers.db import (
     remove_file_metadata,
     update_file_metadata,
 )
-from ..data_layers.s3 import s3_get_download_url, s3_get_upload_url
+from ..data_layers.s3 import head_file, s3_get_download_url, s3_get_upload_url
 from ..utils.helpers import get_current_timestamp
 
 logger = logging.getLogger(APP_NAME)
@@ -115,8 +116,6 @@ def post_file_url(app, file_uuid):
     file_path = f"{file_metadata['file_uuid']}/{file_metadata['filename']}"
     upload_url = s3_get_upload_url(file_path, file_metadata.get("content_type"))
     logger.debug(f"upload_url: {upload_url}")
-    if upload_url:
-        update_file_metadata(file_uuid, user_id, {"uploaded": True})
 
     return upload_url
 
@@ -135,7 +134,19 @@ def get_file_url(app, file_uuid):
         file_path, file_metadata["filename"], file_metadata.get("content_type")
     )
     logger.debug(f"download_url: {download_url}")
-    if download_url:
-        update_file_metadata(file_uuid, user_id, {"uploaded": True})
+
+    try:
+        head_file(file_path)
+    except ClientError as e:
+        if e.response.get("Error", {}).get("Code") == "404":
+            raise NotFoundError("The file has not been uploaded yet.")
+        raise
+
+    if file_metadata["uploaded"] == False:
+        update_file_metadata(
+            file_uuid,
+            user_id,
+            {"filename": file_metadata["filename"], "uploaded": True},
+        )
 
     return download_url
