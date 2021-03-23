@@ -4,8 +4,8 @@ export interface File {
   file_size: string;
   description: string;
   content_type: string;
-  uploaded: boolean;
   favorite: boolean;
+  uploaded: boolean;
   record_created: string;
   record_updated: string;
 }

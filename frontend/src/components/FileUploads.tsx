@@ -100,6 +100,7 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
       await putFile(this.props.auth.getIdToken(), file.file_uuid, {
         filename: file.filename,
         favorite: !file.favorite,
+        uploaded: file.uploaded,
       })
       this.setState({
         files: update(this.state.files, {
