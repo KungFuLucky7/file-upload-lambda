@@ -8,11 +8,9 @@ import { LogIn } from './components/LogIn'
 import { NotFound } from './components/NotFound'
 import { FileUploads } from './components/FileUploads'
 
-export interface AppProps {}
-
 export interface AppProps {
-  auth: Auth
-  history: any
+  auth: Auth;
+  history: any;
 }
 
 export interface AppState {}

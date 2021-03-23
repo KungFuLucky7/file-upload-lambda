@@ -36,7 +36,7 @@ Resources:
               - Effect: Allow
                 Action:
                 - secretsmanager:GetSecretValue
-                Resource: arn:aws:secretsmanager:us-east-1:485673885023:secret:file-upload-secrets-KEi8PV
+                Resource: arn:aws:secretsmanager:us-east-1:485673885023:secret:file-upload-secrets-mFmThl
               - Effect: Allow
                 Action:
                   - dynamodb:Query
