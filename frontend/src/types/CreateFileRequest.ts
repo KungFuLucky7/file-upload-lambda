@@ -1,4 +1,4 @@
 export interface CreateFileRequest {
   filename: string;
-  recordCreated: string;
+  record_created: string;
 }

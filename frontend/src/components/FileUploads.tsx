@@ -45,10 +45,10 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
 
   onFileCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
     try {
-      const recordCreated = this.getCurrentTimestamp()
+      const record_created = this.getCurrentTimestamp()
       const newFile = await createFile(this.props.auth.getIdToken(), {
         filename: this.state.newFilename,
-        recordCreated
+        record_created
       })
       this.setState({
         files: [...this.state.files, newFile],
@@ -76,7 +76,7 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
       await putFile(this.props.auth.getIdToken(), file.file_uuid, {
         filename: file.filename,
         uploaded: file.uploaded,
-        recordCreated: file.recordCreated,
+        record_created: file.record_created,
       })
       this.setState({
         files: update(this.state.files, {
@@ -172,7 +172,7 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
                 {file.filename}
               </Grid.Column>
               <Grid.Column width={3} floated="right">
-                {file.recordCreated}
+                {file.record_created}
               </Grid.Column>
               <Grid.Column width={1} floated="right">
                 <Button
@@ -205,6 +205,6 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
   }
 
   getCurrentTimestamp(): string {
-    return dateFormat(new Date(), "AMERICANSHORTWTIME") as string;
+    return dateFormat(new Date(), "AMERICANSHORTWTIME");
   }
 }
