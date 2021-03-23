@@ -144,6 +144,7 @@ def get_file_url(app, file_uuid):
         raise
 
     if file_metadata["uploaded"] == False:
+        logger.info("Marking a file uploaded.", extra=context)
         update_file_metadata(
             file_uuid,
             user_id,

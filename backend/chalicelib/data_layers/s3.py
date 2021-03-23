@@ -18,6 +18,7 @@ def s3_get_upload_url(file_path, content_type=None):
             "Key": file_path,
         }
         if content_type:
+            logger.debug(f"content_type: {content_type}")
             params["ContentType"] = content_type
         presigned_url = s3.generate_presigned_url(
             ClientMethod="put_object",
@@ -40,6 +41,7 @@ def s3_get_download_url(file_path, filename, content_type=None):
             "ResponseContentDisposition": f"attachment; filename={filename}",
         }
         if content_type:
+            logger.debug(f"content_type: {content_type}")
             params["ResponseContentType"] = content_type
         presigned_url = s3.generate_presigned_url(
             ClientMethod="get_object",
