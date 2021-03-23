@@ -14,74 +14,74 @@ import {
   Loader
 } from 'semantic-ui-react'
 
-import { createTodo, deleteTodo, getFiles, patchTodo } from '../api/fileUploadApi'
+import { createFile, deleteFile, getFiles, putFile } from '../api/fileUploadApi'
 import Auth from '../auth/Auth'
-import { Todo } from '../types/File'
+import { File } from '../types/File'
 
-interface FileUploadsProps {
+interface FilesProps {
   auth: Auth;
   history: History;
 }
 
-interface FileUploadsState {
-  files: Todo[];
-  newTodoName: string;
-  loadingFileUploads: boolean;
+interface FilesState {
+  files: File[];
+  newFilename: string;
+  loadingFiles: boolean;
 }
 
-export class FileUploads extends React.PureComponent<FileUploadsProps, FileUploadsState> {
-  state: FileUploadsState = {
+export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
+  state: FilesState = {
     files: [],
-    newTodoName: '',
-    loadingFileUploads: true
+    newFilename: '',
+    loadingFiles: true
   }
 
   handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ newTodoName: event.target.value })
+    this.setState({ newFilename: event.target.value })
   }
 
   onEditButtonClick = (fileUuid: string) => {
     this.props.history.push(`/files/${fileUuid}/edit`)
   }
 
-  onTodoCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
+  onFileCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
     try {
       const dueDate = this.calculateDueDate()
-      const newTodo = await createTodo(this.props.auth.getIdToken(), {
-        name: this.state.newTodoName,
+      const newFile = await createFile(this.props.auth.getIdToken(), {
+        name: this.state.newFilename,
         dueDate
       })
       this.setState({
-        files: [...this.state.files, newTodo],
-        newTodoName: ''
+        files: [...this.state.files, newFile],
+        newFilename: ''
       })
     } catch {
-      alert('Todo creation failed')
+      alert('File creation failed')
     }
   }
 
-  onTodoDelete = async (todoId: string) => {
+  onFileDelete = async (fileUuid: string) => {
     try {
-      await deleteTodo(this.props.auth.getIdToken(), todoId)
+      await deleteFile(this.props.auth.getIdToken(), fileUuid)
       this.setState({
-        files: this.state.files.filter(todo => todo.todoId != todoId)
+        files: this.state.files.filter(todo => todo.fileUuid != fileUuid)
       })
     } catch {
       alert('Todo deletion failed')
     }
   }
 
-  onTodoCheck = async (pos: number) => {
+  onFileCheck = async (pos: number) => {
     try {
-      const todo = this.state.files[pos]
-      await patchTodo(this.props.auth.getIdToken(), todo.todoId, {
-        name: todo.name,
-        dueDate: todo.dueDate,
-        done: !todo.done
+      const file = this.state.files[pos]
+      await putFile(this.props.auth.getIdToken(), file.fileUuid, {
+        filename: file.filename,
+        description: file.description,
+        recordCreated: file.recordCreated,
       })
       this.setState({
         files: update(this.state.files, {
-          [pos]: { done: { $set: !todo.done } }
+          [pos]: { description: { $set: file.description } }
         })
       })
     } catch {
@@ -94,7 +94,7 @@ export class FileUploads extends React.PureComponent<FileUploadsProps, FileUploa
       const files = await getFiles(this.props.auth.getIdToken())
       this.setState({
         files,
-        loadingFileUploads: false
+        loadingFiles: false
       })
     } catch (e) {
       alert(`Failed to fetch files: ${e.message}`)
@@ -139,7 +139,7 @@ export class FileUploads extends React.PureComponent<FileUploadsProps, FileUploa
   }
 
   renderFileUploads() {
-    if (this.state.loadingFileUploads) {
+    if (this.state.loadingFiles) {
       return this.renderLoading()
     }
 
@@ -161,7 +161,7 @@ export class FileUploads extends React.PureComponent<FileUploadsProps, FileUploa
       <Grid padded>
         {this.state.files.map((todo, pos) => {
           return (
-            <Grid.Row key={todo.todoId}>
+            <Grid.Row key={todo.fileUuid}>
               <Grid.Column width={1} verticalAlign="middle">
                 <Checkbox
                   onChange={() => this.onTodoCheck(pos)}
@@ -178,7 +178,7 @@ export class FileUploads extends React.PureComponent<FileUploadsProps, FileUploa
                 <Button
                   icon
                   color="blue"
-                  onClick={() => this.onEditButtonClick(todo.todoId)}
+                  onClick={() => this.onEditButtonClick(todo.fileUuid)}
                 >
                   <Icon name="pencil" />
                 </Button>
@@ -187,7 +187,7 @@ export class FileUploads extends React.PureComponent<FileUploadsProps, FileUploa
                 <Button
                   icon
                   color="red"
-                  onClick={() => this.onTodoDelete(todo.todoId)}
+                  onClick={() => this.onTodoDelete(todo.fileUuid)}
                 >
                   <Icon name="delete" />
                 </Button>
