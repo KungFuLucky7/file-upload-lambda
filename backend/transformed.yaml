@@ -25,7 +25,7 @@ Outputs:
 Resources:
   APIHandler:
     Properties:
-      CodeUri: s3://file-upload-deployment-bucket/63ae43010f83f749fdb79418cf8864d9
+      CodeUri: s3://file-upload-deployment-bucket/5d9afeb2df4c083dde8af0714f2fa499
       Environment:
         Variables:
           AUTH0_DOMAIN: kungfulucky7.us.auth0.com
@@ -166,7 +166,7 @@ Resources:
     Type: AWS::DynamoDB::Table
   JwtTokenAuth:
     Properties:
-      CodeUri: s3://file-upload-deployment-bucket/63ae43010f83f749fdb79418cf8864d9
+      CodeUri: s3://file-upload-deployment-bucket/5d9afeb2df4c083dde8af0714f2fa499
       Environment:
         Variables:
           AUTH0_DOMAIN: kungfulucky7.us.auth0.com
@@ -266,6 +266,36 @@ Resources:
                 type: aws_proxy
                 uri:
                   Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${APIHandler.Arn}/invocations
+            options:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: 200 response
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
+                  schema:
+                    $ref: '#/definitions/Empty'
+              x-amazon-apigateway-integration:
+                contentHandling: CONVERT_TO_TEXT
+                passthroughBehavior: when_no_match
+                requestTemplates:
+                  application/json: '{"statusCode": 200}'
+                responses:
+                  default:
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: '''Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'''
+                      method.response.header.Access-Control-Allow-Methods: '''GET,POST,OPTIONS'''
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                    statusCode: '200'
+                type: mock
             post:
               consumes:
               - application/json
@@ -343,6 +373,36 @@ Resources:
                 type: aws_proxy
                 uri:
                   Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${APIHandler.Arn}/invocations
+            options:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: 200 response
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
+                  schema:
+                    $ref: '#/definitions/Empty'
+              x-amazon-apigateway-integration:
+                contentHandling: CONVERT_TO_TEXT
+                passthroughBehavior: when_no_match
+                requestTemplates:
+                  application/json: '{"statusCode": 200}'
+                responses:
+                  default:
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: '''Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'''
+                      method.response.header.Access-Control-Allow-Methods: '''GET,PUT,DELETE,OPTIONS'''
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                    statusCode: '200'
+                type: mock
             put:
               consumes:
               - application/json
@@ -398,6 +458,36 @@ Resources:
                 type: aws_proxy
                 uri:
                   Fn::Sub: arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${APIHandler.Arn}/invocations
+            options:
+              consumes:
+              - application/json
+              produces:
+              - application/json
+              responses:
+                '200':
+                  description: 200 response
+                  headers:
+                    Access-Control-Allow-Headers:
+                      type: string
+                    Access-Control-Allow-Methods:
+                      type: string
+                    Access-Control-Allow-Origin:
+                      type: string
+                  schema:
+                    $ref: '#/definitions/Empty'
+              x-amazon-apigateway-integration:
+                contentHandling: CONVERT_TO_TEXT
+                passthroughBehavior: when_no_match
+                requestTemplates:
+                  application/json: '{"statusCode": 200}'
+                responses:
+                  default:
+                    responseParameters:
+                      method.response.header.Access-Control-Allow-Headers: '''Authorization,Content-Type,X-Amz-Date,X-Amz-Security-Token,X-Api-Key'''
+                      method.response.header.Access-Control-Allow-Methods: '''POST,GET,OPTIONS'''
+                      method.response.header.Access-Control-Allow-Origin: '''*'''
+                    statusCode: '200'
+                type: mock
             post:
               consumes:
               - application/json

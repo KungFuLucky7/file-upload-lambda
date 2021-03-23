@@ -47,6 +47,9 @@ def update_file_metadata(
     if "content_type" in file_metadata:
         update_expression += ", content_type=:content_type"
         expression_attribute_values[":content_type"] = file_metadata["content_type"]
+    if "uploaded" in file_metadata:
+        update_expression += ", uploaded=:uploaded"
+        expression_attribute_values[":uploaded"] = file_metadata["uploaded"]
     if "record_updated" in file_metadata:
         update_expression += ", record_updated=:record_updated"
         expression_attribute_values[":record_updated"] = file_metadata["record_updated"]

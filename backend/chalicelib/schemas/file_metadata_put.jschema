@@ -37,6 +37,11 @@
       "minLength": 1,
       "maxLength": 256,
       "pattern": "\\S+"
+    },
+    "uploaded": {
+      "type": "boolean",
+      "description": "File uploaded status",
+      "default": false
     }
   },
   "additionalProperties": false,

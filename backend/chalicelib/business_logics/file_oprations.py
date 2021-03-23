@@ -55,6 +55,7 @@ def post_file_metadata(app):
         **{"file_uuid": file_uuid, "user_id": user_id},
         **file_metadata,
         **{
+            "uploaded": False,
             "record_created": current_timestamp,
             "record_updated": current_timestamp,
         },
@@ -114,6 +115,8 @@ def post_file_url(app, file_uuid):
     file_path = f"{file_metadata['file_uuid']}/{file_metadata['filename']}"
     upload_url = s3_get_upload_url(file_path, file_metadata.get("content_type"))
     logger.debug(f"upload_url: {upload_url}")
+    if upload_url:
+        update_file_metadata(file_uuid, user_id, {"uploaded": True})
 
     return upload_url
 
@@ -132,5 +135,7 @@ def get_file_url(app, file_uuid):
         file_path, file_metadata["filename"], file_metadata.get("content_type")
     )
     logger.debug(f"download_url: {download_url}")
+    if download_url:
+        update_file_metadata(file_uuid, user_id, {"uploaded": True})
 
     return download_url
