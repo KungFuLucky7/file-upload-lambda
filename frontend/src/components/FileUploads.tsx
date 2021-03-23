@@ -1,5 +1,5 @@
-import dateFormat from 'dateformat'
 import { History } from 'history'
+import dateFormat from 'dateformat'
 import update from 'immutability-helper'
 import * as React from 'react'
 import {
@@ -167,10 +167,12 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
                 />
               </Grid.Column>
               <Grid.Column width={10} verticalAlign="middle">
-                {file.filename}
+                <b>Filename:</b> {file.filename}{"  "}
+                <b>Uploaded:</b> {((file.uploaded) ? "true" : "false")}{"  "}
+                <b>Favorite:</b> {((file.favorite) ? "true" : "false")}
               </Grid.Column>
               <Grid.Column width={3} floated="right">
-                Uploaded: {((file.uploaded) ? "true" : "false")} Favorite: {((file.favorite) ? "true" : "false")} {file.record_created}
+                {file.record_created}
               </Grid.Column>
               <Grid.Column width={1} floated="right">
                 <Button
