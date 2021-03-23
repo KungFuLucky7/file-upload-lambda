@@ -93,49 +93,58 @@ def ping():
     return Response(body={"pong": "From File Upload API"}, status_code=200)
 
 
-@app.route("/files/metadata", methods=["GET"], authorizer=jwt_token_auth)
+@app.route("/files/metadata", methods=["GET"], authorizer=jwt_token_auth, cors=True)
 def files_list_file_metadata():
     items = list_file_metadata(app)
 
     return Response(body=items, status_code=200)
 
 
-@app.route("/files/metadata", methods=["POST"], authorizer=jwt_token_auth)
+@app.route("/files/metadata", methods=["POST"], authorizer=jwt_token_auth, cors=True)
 def files_post_file_metadata():
     item = post_file_metadata(app)
 
     return Response(body=item, status_code=201)
 
 
-@app.route("/files/metadata/{file_uuid}", methods=["GET"], authorizer=jwt_token_auth)
+@app.route(
+    "/files/metadata/{file_uuid}", methods=["GET"], authorizer=jwt_token_auth, cors=True
+)
 def files_get_file_metadata(file_uuid):
     item = get_file_metadata(app, file_uuid)
 
     return Response(body=item, status_code=200)
 
 
-@app.route("/files/metadata/{file_uuid}", methods=["PUT"], authorizer=jwt_token_auth)
+@app.route(
+    "/files/metadata/{file_uuid}", methods=["PUT"], authorizer=jwt_token_auth, cors=True
+)
 def files_put_file_metadata(file_uuid):
     item = put_file_metadata(app, file_uuid)
 
     return Response(body=item, status_code=200)
 
 
-@app.route("/files/metadata/{file_uuid}", methods=["DELETE"], authorizer=jwt_token_auth)
+@app.route(
+    "/files/metadata/{file_uuid}",
+    methods=["DELETE"],
+    authorizer=jwt_token_auth,
+    cors=True,
+)
 def files_delete_file_metadata(file_uuid):
     delete_file_metadata(app, file_uuid)
 
     return Response(body={}, status_code=204)
 
 
-@app.route("/files/{file_uuid}", methods=["POST"], authorizer=jwt_token_auth)
+@app.route("/files/{file_uuid}", methods=["POST"], authorizer=jwt_token_auth, cors=True)
 def files_post_file(file_uuid):
     upload_url = post_file_url(app, file_uuid)
 
     return Response(body={"upload_url": upload_url}, status_code=202)
 
 
-@app.route("/files/{file_uuid}", methods=["GET"], authorizer=jwt_token_auth)
+@app.route("/files/{file_uuid}", methods=["GET"], authorizer=jwt_token_auth, cors=True)
 def files_get_file(file_uuid):
     download_url = get_file_url(app, file_uuid)
 
