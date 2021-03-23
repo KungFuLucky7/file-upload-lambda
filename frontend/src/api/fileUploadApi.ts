@@ -14,7 +14,7 @@ export async function getFiles(idToken: string): Promise<File[]> {
     },
   })
   console.log('Got files:', response.data);
-  return response.data
+  return response.data;
 }
 
 export async function createFile(
@@ -28,7 +28,7 @@ export async function createFile(
     }
   })
   console.log('Created file:', response.data);
-  return response.data
+  return response.data;
 }
 
 export async function getFile(idToken: string, file_uuid: string): Promise<File[]> {
@@ -41,7 +41,7 @@ export async function getFile(idToken: string, file_uuid: string): Promise<File[
     },
   })
   console.log('Got file:', response.data);
-  return response.data
+  return response.data;
 }
 
 export async function putFile(
@@ -56,7 +56,7 @@ export async function putFile(
     }
   })
   console.log('Updated file:', response.data);
-  return response.data
+  return response.data;
 }
 
 export async function deleteFile(
@@ -82,7 +82,8 @@ export async function getUploadUrl(
       'Authorization': `Bearer ${idToken}`
     }
   })
-  return response.data.upload_url
+  console.log('Upload URL:', response.data);
+  return response.data;
 }
 
 export async function uploadFileData(uploadUrl: string, file: Buffer): Promise<void> {
@@ -99,5 +100,6 @@ export async function downloadFileData(
       'Authorization': `Bearer ${idToken}`
     }
   })
+  console.log('Download URL:', response.data);
   return response.data
 }
