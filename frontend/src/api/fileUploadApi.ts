@@ -88,6 +88,7 @@ export async function getUploadUrl(
 
 export async function uploadFileData(uploadUrl: string, file: Buffer, content_type: string): Promise<void> {
   console.log("Uploading file.");
+  console.log("Content-Type", content_type);
   try {
     await Axios.put(uploadUrl, file,{
       headers: {
