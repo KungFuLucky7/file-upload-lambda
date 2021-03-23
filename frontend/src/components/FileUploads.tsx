@@ -14,34 +14,34 @@ import {
   Loader
 } from 'semantic-ui-react'
 
-import { createTodo, deleteTodo, getTodos, patchTodo } from '../api/fileUploadApi'
+import { createTodo, deleteTodo, getFiles, patchTodo } from '../api/fileUploadApi'
 import Auth from '../auth/Auth'
-import { Todo } from '../types/Todo'
+import { Todo } from '../types/File'
 
-interface TodosProps {
-  auth: Auth
-  history: History
+interface FileUploadsProps {
+  auth: Auth;
+  history: History;
 }
 
-interface TodosState {
-  todos: Todo[]
-  newTodoName: string
-  loadingTodos: boolean
+interface FileUploadsState {
+  files: Todo[];
+  newTodoName: string;
+  loadingFileUploads: boolean;
 }
 
-export class FileUploads extends React.PureComponent<TodosProps, TodosState> {
-  state: TodosState = {
-    todos: [],
+export class FileUploads extends React.PureComponent<FileUploadsProps, FileUploadsState> {
+  state: FileUploadsState = {
+    files: [],
     newTodoName: '',
-    loadingTodos: true
+    loadingFileUploads: true
   }
 
   handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ newTodoName: event.target.value })
   }
 
-  onEditButtonClick = (todoId: string) => {
-    this.props.history.push(`/todos/${todoId}/edit`)
+  onEditButtonClick = (fileUuid: string) => {
+    this.props.history.push(`/files/${fileUuid}/edit`)
   }
 
   onTodoCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
@@ -52,7 +52,7 @@ export class FileUploads extends React.PureComponent<TodosProps, TodosState> {
         dueDate
       })
       this.setState({
-        todos: [...this.state.todos, newTodo],
+        files: [...this.state.files, newTodo],
         newTodoName: ''
       })
     } catch {
@@ -64,7 +64,7 @@ export class FileUploads extends React.PureComponent<TodosProps, TodosState> {
     try {
       await deleteTodo(this.props.auth.getIdToken(), todoId)
       this.setState({
-        todos: this.state.todos.filter(todo => todo.todoId != todoId)
+        files: this.state.files.filter(todo => todo.todoId != todoId)
       })
     } catch {
       alert('Todo deletion failed')
@@ -73,14 +73,14 @@ export class FileUploads extends React.PureComponent<TodosProps, TodosState> {
 
   onTodoCheck = async (pos: number) => {
     try {
-      const todo = this.state.todos[pos]
+      const todo = this.state.files[pos]
       await patchTodo(this.props.auth.getIdToken(), todo.todoId, {
         name: todo.name,
         dueDate: todo.dueDate,
         done: !todo.done
       })
       this.setState({
-        todos: update(this.state.todos, {
+        files: update(this.state.files, {
           [pos]: { done: { $set: !todo.done } }
         })
       })
@@ -91,24 +91,24 @@ export class FileUploads extends React.PureComponent<TodosProps, TodosState> {
 
   async componentDidMount() {
     try {
-      const todos = await getTodos(this.props.auth.getIdToken())
+      const files = await getFiles(this.props.auth.getIdToken())
       this.setState({
-        todos,
-        loadingTodos: false
+        files,
+        loadingFileUploads: false
       })
     } catch (e) {
-      alert(`Failed to fetch todos: ${e.message}`)
+      alert(`Failed to fetch files: ${e.message}`)
     }
   }
 
   render() {
     return (
       <div>
-        <Header as="h1">TODOs</Header>
+        <Header as="h1">File Uploads</Header>
 
         {this.renderCreateTodoInput()}
 
-        {this.renderTodos()}
+        {this.renderFileUploads()}
       </div>
     )
   }
@@ -138,12 +138,12 @@ export class FileUploads extends React.PureComponent<TodosProps, TodosState> {
     )
   }
 
-  renderTodos() {
-    if (this.state.loadingTodos) {
+  renderFileUploads() {
+    if (this.state.loadingFileUploads) {
       return this.renderLoading()
     }
 
-    return this.renderTodosList()
+    return this.renderFileUploadsList()
   }
 
   renderLoading() {
@@ -156,10 +156,10 @@ export class FileUploads extends React.PureComponent<TodosProps, TodosState> {
     )
   }
 
-  renderTodosList() {
+  renderFileUploadsList() {
     return (
       <Grid padded>
-        {this.state.todos.map((todo, pos) => {
+        {this.state.files.map((todo, pos) => {
           return (
             <Grid.Row key={todo.todoId}>
               <Grid.Column width={1} verticalAlign="middle">

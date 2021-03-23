@@ -1,11 +1,11 @@
 import { apiEndpoint } from '../config'
-import { Todo } from '../types/Todo';
-import { CreateTodoRequest } from '../types/CreateTodoRequest';
+import { File } from '../types/File';
+import { CreateFileRequest } from '../types/CreateFileRequest';
 import Axios from 'axios'
-import { UpdateTodoRequest } from '../types/UpdateTodoRequest';
+import { UpdateFileRequest } from '../types/UpdateFileRequest';
 
-export async function getTodos(idToken: string): Promise<Todo[]> {
-  console.log('Fetching todos')
+export async function getFiles(idToken: string): Promise<File[]> {
+  console.log('Fetching files')
 
   const response = await Axios.get(`${apiEndpoint}/todos`, {
     headers: {
@@ -17,11 +17,11 @@ export async function getTodos(idToken: string): Promise<Todo[]> {
   return response.data.items
 }
 
-export async function createTodo(
+export async function createFile(
   idToken: string,
-  newTodo: CreateTodoRequest
-): Promise<Todo> {
-  const response = await Axios.post(`${apiEndpoint}/todos`,  JSON.stringify(newTodo), {
+  newFile: CreateFileRequest
+): Promise<File> {
+  const response = await Axios.post(`${apiEndpoint}/todos`,  JSON.stringify(newFile), {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -30,12 +30,12 @@ export async function createTodo(
   return response.data.item
 }
 
-export async function patchTodo(
+export async function patchFile(
   idToken: string,
   fileUuid: string,
-  updatedTodo: UpdateTodoRequest
+  updatedFile: UpdateFileRequest
 ): Promise<void> {
-  await Axios.patch(`${apiEndpoint}/todos/${fileUuid}`, JSON.stringify(updatedTodo), {
+  await Axios.patch(`${apiEndpoint}/todos/${fileUuid}`, JSON.stringify(updatedFile), {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -43,7 +43,7 @@ export async function patchTodo(
   })
 }
 
-export async function deleteTodo(
+export async function deleteFile(
   idToken: string,
   fileUuid: string
 ): Promise<void> {
