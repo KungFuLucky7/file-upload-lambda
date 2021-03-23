@@ -87,7 +87,13 @@ export async function getUploadUrl(
 }
 
 export async function uploadFileData(uploadUrl: string, file: Buffer): Promise<void> {
-  await Axios.put(uploadUrl, file)
+  console.log("Uploading file.");
+  try {
+    await Axios.put(uploadUrl, file);
+  } catch (e) {
+    console.error(e.message);
+    throw e;
+  }
 }
 
 export async function downloadFileData(
@@ -96,7 +102,6 @@ export async function downloadFileData(
 ): Promise<string> {
   const response = await Axios.get(`${apiEndpoint}/files/${file_uuid}`, {
     headers: {
-      'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
     }
   })

@@ -45,17 +45,25 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
 
   onFileCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
     try {
-      const record_created = this.getCurrentTimestamp()
+      if (!this.state.newFilename) {
+        throw 'Filename is empty!';
+      }
+      let mime = require('mime-types');
+      console.log("filename", this.state.newFilename);
+      const content_type = mime.lookup(this.state.newFilename);
+      console.log("content_type", content_type);
+      const record_created = this.getCurrentTimestamp();
       const newFile = await createFile(this.props.auth.getIdToken(), {
         filename: this.state.newFilename,
+        content_type: content_type,
         record_created
       })
       this.setState({
         files: [...this.state.files, newFile],
         newFilename: ''
       })
-    } catch {
-      alert('File creation failed')
+    } catch (e) {
+      alert(`File creation failed: ${e}`)
     }
   }
 
@@ -65,8 +73,8 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
       this.setState({
         files: this.state.files.filter(file => file.file_uuid != file_uuid)
       })
-    } catch {
-      alert('File deletion failed')
+    } catch (e) {
+      alert(`File deletion failed: ${e}`)
     }
   }
 
@@ -82,8 +90,8 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
           [pos]: { favorite: { $set: !file.favorite } }
         })
       })
-    } catch {
-      alert('File update failed')
+    } catch (e) {
+      alert(`File update failed: ${e}`)
     }
   }
 
@@ -168,6 +176,7 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
               </Grid.Column>
               <Grid.Column width={10} verticalAlign="middle">
                 <b>Filename:</b> {file.filename}{"  "}
+                <b>Content-Type:</b> {file.content_type}{"  "}
                 <b>Uploaded:</b> {((file.uploaded) ? "true" : "false")}{"  "}
                 <b>Favorite:</b> {((file.favorite) ? "true" : "false")}
               </Grid.Column>
