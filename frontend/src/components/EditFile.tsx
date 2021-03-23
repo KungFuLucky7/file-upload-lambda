@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Button, Form } from 'semantic-ui-react'
 import Auth from '../auth/Auth'
-import { getUploadUrl, uploadFileData } from '../api/fileUploadApi'
+import { getFile, getUploadUrl, uploadFileData } from '../api/fileUploadApi'
 
 enum UploadState {
   NoUpload,
@@ -51,16 +51,19 @@ export class EditFile extends React.PureComponent<
       }
 
       this.setUploadState(UploadState.FetchingPresignedUrl)
-      const uploadUrl = await getUploadUrl(this.props.auth.getIdToken(), this.props.match.params.file_uuid)
+      const file_uuid = this.props.match.params.file_uuid;
+      const file = await getFile(this.props.auth.getIdToken(), file_uuid);
+      console.log("File:", file);
+      const content_type = file.content_type;
+      const uploadUrl = await getUploadUrl(this.props.auth.getIdToken(), file_uuid);
+      this.setUploadState(UploadState.UploadingFile);
+      await uploadFileData(uploadUrl, this.state.file, content_type);
 
-      this.setUploadState(UploadState.UploadingFile)
-      await uploadFileData(uploadUrl, this.state.file)
-
-      alert('File was uploaded!')
+      alert('File was uploaded!');
     } catch (e) {
-      alert('Could not upload a file: ' + e.message)
+      alert('Could not upload a file: ' + e.message);
     } finally {
-      this.setUploadState(UploadState.NoUpload)
+      this.setUploadState(UploadState.NoUpload);
     }
   }
 

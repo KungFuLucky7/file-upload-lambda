@@ -31,10 +31,10 @@ export async function createFile(
   return response.data;
 }
 
-export async function getFile(idToken: string, file_uuid: string): Promise<File[]> {
+export async function getFile(idToken: string, file_uuid: string): Promise<File> {
   console.log('Fetching a file')
 
-  const response = await Axios.get(`${apiEndpoint}/files/metadata${file_uuid}`, {
+  const response = await Axios.get(`${apiEndpoint}/files/metadata/${file_uuid}`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -86,10 +86,14 @@ export async function getUploadUrl(
   return response.data;
 }
 
-export async function uploadFileData(uploadUrl: string, file: Buffer): Promise<void> {
+export async function uploadFileData(uploadUrl: string, file: Buffer, content_type: string): Promise<void> {
   console.log("Uploading file.");
   try {
-    await Axios.put(uploadUrl, file);
+    await Axios.put(uploadUrl, file,{
+      headers: {
+        'Content-Type': content_type,
+      }
+    });
   } catch (e) {
     console.error(e.message);
     throw e;

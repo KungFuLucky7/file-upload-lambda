@@ -175,6 +175,7 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
                 />
               </Grid.Column>
               <Grid.Column width={10} verticalAlign="middle">
+                <b>UUID:</b> {file.file_uuid}<br />
                 <b>Filename:</b> {file.filename}{"  "}
                 <b>Content-Type:</b> {file.content_type}{"  "}
                 <b>Uploaded:</b> {((file.uploaded) ? "true" : "false")}{"  "}
