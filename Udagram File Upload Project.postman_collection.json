@@ -1,0 +1,589 @@
+{
+	"info": {
+		"_postman_id": "3a4d4304-f023-4c85-8bb8-0c06bf0a9e35",
+		"name": "Udacity C4 Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "TODOs",
+			"item": [
+				{
+					"name": "Get all todos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/dev/todos",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"dev",
+								"todos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create todo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Take a note\",\n    \"dueDate\": \"2021-06-01T21:29:49.0+0000\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/dev/todos",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"dev",
+								"todos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update todo",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"done\": true,\n    \"name\": \"Take a note\",\n    \"dueDate\": \"2021-06-01T21:29:49.0+0000\"\n}"
+						},
+						"url": {
+							"raw": "{{host}}/dev/todos/dbae3919-6964-4d0b-91d1-224bc9ea40e8",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"dev",
+								"todos",
+								"dbae3919-6964-4d0b-91d1-224bc9ea40e8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete todo",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/dev/todos/dbae3919-6964-4d0b-91d1-224bc9ea40e8",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"dev",
+								"todos",
+								"dbae3919-6964-4d0b-91d1-224bc9ea40e8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get attachment URL",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/dev/todos/302c2dba-076f-49c9-85ed-b2136e0e64bd/attachment",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"dev",
+								"todos",
+								"302c2dba-076f-49c9-85ed-b2136e0e64bd",
+								"attachment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload attachment",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "image/jpeg"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/Users/terrywon/Downloads/blue flowers.jpg"
+							}
+						},
+						"url": {
+							"raw": "https://todoitem-attachments-dev.s3.amazonaws.com/d0b39901-e90c-44e0-9acb-e4e5c8919947?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIAXCFDLLVP7MAKEHVW%2F20210317%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210317T180758Z&X-Amz-Expires=300&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEPv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJGMEQCIANcZe1dXrHOI61XkAcSkuLgb9QXUFABY4M4%2Bz%2B9HiPQAiAtq7HqWL0G5ELhBsRWajuBz0jofFrSVQdo4ton%2B2e%2FPiroAQgzEAAaDDQ4NTY3Mzg4NTAyMyIMNqEMcqjyHMSGkXERKsUBi1cR3pU2kK%2FLkI7HR13SVhnAefRvJjp%2Ft5sBCa5ZRFM4dporAAqW4ftYaAO4mwGJCXRJn0MDJpjXEJ0ZHVSEC38pY86dBk2bsftoHCXYZcGnN95JpxACwS4366fFFMFBpEIqdd%2FqCc8nEBQupM3QsDFVrmehFmKxFft8f3cG6thcA0zqB7skuRU5vrcnz5x%2F7h1rFKwPIwHPn8X1h5O0rgwf1i5B6clqqftnfxuWJVZNnJ2ym9VOMK9kLKw8d7dGT%2Bq61E0w%2FIrJggY64QEBVyEshmowVwG0Xa9haCKRi88RNcbiERRPJw7%2FxHCWDs2iDv%2BAJCmxAeza%2BD8Ent%2BDXCJ7Xgt8wP0xDXen%2BcUWfsIK3%2FBVHIcflzM5p9HtVqJUnrgKADxSX1XBTIGZSVxsi8H%2Fn%2Bebs%2B5JthAa6njFVOSIZdtqjWYg7NroQD54N80JZwse34VXO6E696LVUZWfi36LsrTYGl%2BjSng%2FIoAwtwn%2F6EPd80GESNhEIheXAP2khAceljxnhLceYzqM%2BW0IllPPHIi0nBOFryURis74GAtsAvocVIhZbEwsX5JmlJ0%3D&X-Amz-Signature=f93c243af10323eca1d2a31ff517f38e35d71fc4a7115e1eacf22e73c808e7f7&X-Amz-SignedHeaders=host",
+							"protocol": "https",
+							"host": [
+								"todoitem-attachments-dev",
+								"s3",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"d0b39901-e90c-44e0-9acb-e4e5c8919947"
+							],
+							"query": [
+								{
+									"key": "X-Amz-Algorithm",
+									"value": "AWS4-HMAC-SHA256"
+								},
+								{
+									"key": "X-Amz-Credential",
+									"value": "ASIAXCFDLLVP7MAKEHVW%2F20210317%2Fus-east-1%2Fs3%2Faws4_request"
+								},
+								{
+									"key": "X-Amz-Date",
+									"value": "20210317T180758Z"
+								},
+								{
+									"key": "X-Amz-Expires",
+									"value": "300"
+								},
+								{
+									"key": "X-Amz-Security-Token",
+									"value": "IQoJb3JpZ2luX2VjEPv%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJGMEQCIANcZe1dXrHOI61XkAcSkuLgb9QXUFABY4M4%2Bz%2B9HiPQAiAtq7HqWL0G5ELhBsRWajuBz0jofFrSVQdo4ton%2B2e%2FPiroAQgzEAAaDDQ4NTY3Mzg4NTAyMyIMNqEMcqjyHMSGkXERKsUBi1cR3pU2kK%2FLkI7HR13SVhnAefRvJjp%2Ft5sBCa5ZRFM4dporAAqW4ftYaAO4mwGJCXRJn0MDJpjXEJ0ZHVSEC38pY86dBk2bsftoHCXYZcGnN95JpxACwS4366fFFMFBpEIqdd%2FqCc8nEBQupM3QsDFVrmehFmKxFft8f3cG6thcA0zqB7skuRU5vrcnz5x%2F7h1rFKwPIwHPn8X1h5O0rgwf1i5B6clqqftnfxuWJVZNnJ2ym9VOMK9kLKw8d7dGT%2Bq61E0w%2FIrJggY64QEBVyEshmowVwG0Xa9haCKRi88RNcbiERRPJw7%2FxHCWDs2iDv%2BAJCmxAeza%2BD8Ent%2BDXCJ7Xgt8wP0xDXen%2BcUWfsIK3%2FBVHIcflzM5p9HtVqJUnrgKADxSX1XBTIGZSVxsi8H%2Fn%2Bebs%2B5JthAa6njFVOSIZdtqjWYg7NroQD54N80JZwse34VXO6E696LVUZWfi36LsrTYGl%2BjSng%2FIoAwtwn%2F6EPd80GESNhEIheXAP2khAceljxnhLceYzqM%2BW0IllPPHIi0nBOFryURis74GAtsAvocVIhZbEwsX5JmlJ0%3D"
+								},
+								{
+									"key": "X-Amz-Signature",
+									"value": "f93c243af10323eca1d2a31ff517f38e35d71fc4a7115e1eacf22e73c808e7f7"
+								},
+								{
+									"key": "X-Amz-SignedHeaders",
+									"value": "host"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Files",
+			"item": [
+				{
+					"name": "Get all file metadata",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/files/metadata",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"files",
+								"metadata"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create file metadata",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"filename\": \"aws.pdf\",\n    \"description\": \"Test description for aws.pdf\",\n    \"content_type\": \"application/pdf\",\n    \"file_size\": 10\n}"
+						},
+						"url": {
+							"raw": "{{host}}/files/metadata",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"files",
+								"metadata"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a file metadata",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{authToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/files/metadata/20a452049aa2493fae2949e1776a90d7",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"files",
+								"metadata",
+								"20a452049aa2493fae2949e1776a90d7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update file metadata",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"filename\": \"aws.txt\",\n    \"content_type\": \"text/plain\",\n    \"favorite\": false,\n    \"uploaded\": false\n}"
+						},
+						"url": {
+							"raw": "{{host}}/files/metadata/802f3eb992d44f8295da8b562d82aa48",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"files",
+								"metadata",
+								"802f3eb992d44f8295da8b562d82aa48"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete file metadata",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/files/metadata/431d25c3cb744044ba8b2e1931fc9593",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"files",
+								"metadata",
+								"431d25c3cb744044ba8b2e1931fc9593"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST file URL",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{authToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/files/a76d4b81de4a47f4857b6869372de21b",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"files",
+								"a76d4b81de4a47f4857b6869372de21b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT file into S3 bucket",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/pdf",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "file",
+							"file": {
+								"src": "/Users/terrywon/Documents/aws.pdf"
+							}
+						},
+						"url": {
+							"raw": "https://file-upload-media-bucket.s3.amazonaws.com/a76d4b81de4a47f4857b6869372de21b/aws.pdf?AWSAccessKeyId=ASIAXCFDLLVPVHLKJ47E&Signature=HuIk5BIwgh3quzrWoCfvJhRnIkY%3D&content-type=application%2Fpdf&x-amz-security-token=IQoJb3JpZ2luX2VjEIn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJIMEYCIQDWo9MrDo4dftcbA0uAtKDXEzZ%2BjwaImlvSNeth6O2OLQIhAOtfeAi4wZzyerwAiB%2BvtevXKPS9otZude8FMUoPVrYvKvIBCML%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMNDg1NjczODg1MDIzIgzFgxbGj0U93sDWduIqxgF7ZtVQL1I3PqnbNHgMAD3nGCnMHVOiT5Zv9QNAgF3bzjAEMzA9u5gxK%2FFJ3wFFYqB0ayuUxyVVmpUtjmxAudYfI0DLI2%2BUHzknptSkt98k0Qewpi8XaE69xvBksq%2BKPtn1nc25TMLFmU2GvDY7JkJYp5deqp0RHmi%2FG4n4cbtXqurK%2B3W3%2B%2FEcxj0Ps0X62Xbkhna7f%2BKxLQMakW9wxS4Illh%2BDwX5tT%2FzPBiTJvDNp5gSnAadBpLjkxeHF4xtQeaszT0T%2FGwwqKzoggY63wHrlykfW%2BfQZinbQ%2FG0TbSUSq3MvdEEPRfqT34ezPSwR5DIyMfQbofhubftjd2zBIO%2BIPFiwLATw8bD2X%2BywALVwgjkk636%2FjfTvXieUpR86Gq0AexmOSrINGnGX%2BnpsuFWWIJ1u0RxWe6G%2FkybJ7XLJ0hHIe2tqfcG3dxa2QyOwie1KY50J3CoEiTpRmc4iROhHTYKLjwVgje5fRXn6hIgiG2nJBxcIOGAjQWp8m3CmJbSLa3usRizDpEIIpOLIqK5KoKwX4eGlzSws3zErzNjHlLkQJmAKCwt3%2BRM5KsN&Expires=1617121776",
+							"protocol": "https",
+							"host": [
+								"file-upload-media-bucket",
+								"s3",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"a76d4b81de4a47f4857b6869372de21b",
+								"aws.pdf"
+							],
+							"query": [
+								{
+									"key": "AWSAccessKeyId",
+									"value": "ASIAXCFDLLVPVHLKJ47E"
+								},
+								{
+									"key": "Signature",
+									"value": "HuIk5BIwgh3quzrWoCfvJhRnIkY%3D"
+								},
+								{
+									"key": "content-type",
+									"value": "application%2Fpdf"
+								},
+								{
+									"key": "x-amz-security-token",
+									"value": "IQoJb3JpZ2luX2VjEIn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJIMEYCIQDWo9MrDo4dftcbA0uAtKDXEzZ%2BjwaImlvSNeth6O2OLQIhAOtfeAi4wZzyerwAiB%2BvtevXKPS9otZude8FMUoPVrYvKvIBCML%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMNDg1NjczODg1MDIzIgzFgxbGj0U93sDWduIqxgF7ZtVQL1I3PqnbNHgMAD3nGCnMHVOiT5Zv9QNAgF3bzjAEMzA9u5gxK%2FFJ3wFFYqB0ayuUxyVVmpUtjmxAudYfI0DLI2%2BUHzknptSkt98k0Qewpi8XaE69xvBksq%2BKPtn1nc25TMLFmU2GvDY7JkJYp5deqp0RHmi%2FG4n4cbtXqurK%2B3W3%2B%2FEcxj0Ps0X62Xbkhna7f%2BKxLQMakW9wxS4Illh%2BDwX5tT%2FzPBiTJvDNp5gSnAadBpLjkxeHF4xtQeaszT0T%2FGwwqKzoggY63wHrlykfW%2BfQZinbQ%2FG0TbSUSq3MvdEEPRfqT34ezPSwR5DIyMfQbofhubftjd2zBIO%2BIPFiwLATw8bD2X%2BywALVwgjkk636%2FjfTvXieUpR86Gq0AexmOSrINGnGX%2BnpsuFWWIJ1u0RxWe6G%2FkybJ7XLJ0hHIe2tqfcG3dxa2QyOwie1KY50J3CoEiTpRmc4iROhHTYKLjwVgje5fRXn6hIgiG2nJBxcIOGAjQWp8m3CmJbSLa3usRizDpEIIpOLIqK5KoKwX4eGlzSws3zErzNjHlLkQJmAKCwt3%2BRM5KsN"
+								},
+								{
+									"key": "Expires",
+									"value": "1617121776"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET file from S3 bucket",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{host}}/files/955dcb8edc454fd7a69e0331b5be22d6",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"files",
+								"955dcb8edc454fd7a69e0331b5be22d6"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:8080",
+			"disabled": true
+		},
+		{
+			"key": "host",
+			"value": "https://s1kjjye3gi.execute-api.us-east-1.amazonaws.com/api"
+		},
+		{
+			"key": "authToken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL2t1bmdmdWx1Y2t5Ny51cy5hdXRoMC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMDA0NDU3MTAyOTM2NzI0NjM0NzAiLCJhdWQiOiJzU0dVOEpyaEhXUkc2cG9PSURFRGpjQ2l5NFhYWTBxNiIsImlhdCI6MTYxNjQ2MjQzMiwiZXhwIjoxNjUyNDYyNDMyLCJhdF9oYXNoIjoiV3c0YnlHU0tQQmkwWWdUMkFrWWdOQSIsIm5vbmNlIjoiYjAxUU55czUtN3JydDFCdk9tXzR2Y21MNjhUX1kzVW4ifQ.GFxHZpb-EAO0mpVd-u5hygo4EJnhNCeAsSQcWPfpcKs"
+		}
+	]
+}

@@ -4,11 +4,11 @@ python:
 branches:
   only:
   - master
-install:
-  - pip install awscli
-  - pip install chalice
-before_script:
+before_install:
   - cd backend
+install:
+  - pip install -r requirements.txt
+  - pip install chalice
 script:
   - chalice package --stage dev --merge-template resource_policies.yaml --template-format yaml .
   - aws cloudformation package --template-file sam.yaml --s3-bucket $AWS_S3_BUCKET --output-template-file ../transformed.yaml
