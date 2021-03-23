@@ -13,7 +13,13 @@ import {
   Loader
 } from 'semantic-ui-react'
 
-import { createFile, deleteFile, getFiles, putFile } from '../api/fileUploadApi'
+import {
+  createFile,
+  deleteFile,
+  downloadFileData,
+  getFiles,
+  putFile
+} from '../api/fileUploadApi'
 import Auth from '../auth/Auth'
 import { File } from '../types/File'
 
@@ -40,7 +46,7 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
   }
 
   onEditButtonClick = (file_uuid: string) => {
-    this.props.history.push(`/files/${file_uuid}/edit`)
+    this.props.history.push(`/files/${file_uuid}/edit`);
   }
 
   onFileCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
@@ -64,6 +70,16 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
       })
     } catch (e) {
       alert(`File creation failed: ${e}`)
+    }
+  }
+
+  onFileDownload = async (file_uuid: string, filename: string) => {
+    try {
+      const downloadUrl = await downloadFileData(this.props.auth.getIdToken(), file_uuid);
+      console.log("downloadUrl", downloadUrl);
+      window.open(downloadUrl, "_blank");
+    } catch (e) {
+      alert(`File download failed: ${e}`)
     }
   }
 
@@ -174,7 +190,7 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
                   checked={file.favorite}
                 />
               </Grid.Column>
-              <Grid.Column width={10} verticalAlign="middle">
+              <Grid.Column width={8} verticalAlign="middle">
                 <b>UUID:</b> {file.file_uuid}<br />
                 <b>Filename:</b> {file.filename}{"  "}
                 <b>Content-Type:</b> {file.content_type}{"  "}
@@ -196,12 +212,20 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
               <Grid.Column width={1} floated="right">
                 <Button
                   icon
+                  color="green"
+                  onClick={() => this.onFileDownload(file.file_uuid, file.filename)}
+                >
+                  <Icon name="download" />
+                </Button>
+              </Grid.Column>
+              <Grid.Column width={1} floated="right">
+                <Button
+                  icon
                   color="red"
                   onClick={() => this.onFileDelete(file.file_uuid)}
                 >
                   <Icon name="delete" />
                 </Button>
-                <Divider />
               </Grid.Column>
             </Grid.Row>
           )

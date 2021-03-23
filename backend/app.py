@@ -148,6 +148,4 @@ def files_post_file(file_uuid):
 def files_get_file(file_uuid):
     download_url = get_file_url(app, file_uuid)
 
-    return Response(
-        body=download_url, headers={"Location": download_url}, status_code=302
-    )
+    return Response(body=download_url, status_code=200)
