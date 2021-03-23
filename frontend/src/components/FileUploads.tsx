@@ -75,12 +75,11 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
       const file = this.state.files[pos]
       await putFile(this.props.auth.getIdToken(), file.file_uuid, {
         filename: file.filename,
-        uploaded: file.uploaded,
-        record_created: file.record_created,
+        favorite: !file.favorite,
       })
       this.setState({
         files: update(this.state.files, {
-          [pos]: { uploaded: { $set: true } }
+          [pos]: { favorite: { $set: !file.favorite } }
         })
       })
     } catch {
@@ -156,7 +155,6 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
   }
 
   renderFilesList() {
-    console.log(`Files: ${this.state.files}`);
     return (
       <Grid padded>
         {this.state.files.map((file, pos) => {
@@ -172,7 +170,7 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
                 {file.filename}
               </Grid.Column>
               <Grid.Column width={3} floated="right">
-                {file.record_created}
+                Uploaded: {((file.uploaded) ? "true" : "false")} Favorite: {((file.favorite) ? "true" : "false")} {file.record_created}
               </Grid.Column>
               <Grid.Column width={1} floated="right">
                 <Button
@@ -191,10 +189,6 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
                 >
                   <Icon name="delete" />
                 </Button>
-              </Grid.Column>
-              File uploaded: {file.uploaded}
-              }
-              <Grid.Column width={16}>
                 <Divider />
               </Grid.Column>
             </Grid.Row>
