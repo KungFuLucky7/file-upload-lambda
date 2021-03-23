@@ -9,7 +9,7 @@ enum UploadState {
   UploadingFile,
 }
 
-interface EditTodoProps {
+interface EditFileProps {
   match: {
     params: {
       fileUuid: string
@@ -18,16 +18,16 @@ interface EditTodoProps {
   auth: Auth
 }
 
-interface EditTodoState {
+interface EditFileState {
   file: any
   uploadState: UploadState
 }
 
 export class EditFile extends React.PureComponent<
-  EditTodoProps,
-  EditTodoState
+  EditFileProps,
+  EditFileState
 > {
-  state: EditTodoState = {
+  state: EditFileState = {
     file: undefined,
     uploadState: UploadState.NoUpload
   }
@@ -73,15 +73,15 @@ export class EditFile extends React.PureComponent<
   render() {
     return (
       <div>
-        <h1>Upload new image</h1>
+        <h1>Upload new file</h1>
 
         <Form onSubmit={this.handleSubmit}>
           <Form.Field>
             <label>File</label>
             <input
               type="file"
-              accept="image/*"
-              placeholder="Image to upload"
+              accept="*/*"
+              placeholder="File to upload"
               onChange={this.handleFileChange}
             />
           </Form.Field>
@@ -96,7 +96,7 @@ export class EditFile extends React.PureComponent<
 
     return (
       <div>
-        {this.state.uploadState === UploadState.FetchingPresignedUrl && <p>Uploading image metadata</p>}
+        {this.state.uploadState === UploadState.FetchingPresignedUrl && <p>Uploading file metadata</p>}
         {this.state.uploadState === UploadState.UploadingFile && <p>Uploading file</p>}
         <Button
           loading={this.state.uploadState !== UploadState.NoUpload}

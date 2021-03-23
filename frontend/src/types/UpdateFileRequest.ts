@@ -1,5 +1,5 @@
 export interface UpdateFileRequest {
   filename: string;
-  description: string;
+  uploaded: boolean;
   recordCreated: string;
 }

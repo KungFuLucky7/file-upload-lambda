@@ -4,6 +4,8 @@ export interface File {
   fileSize: string;
   description: string;
   contentType: string;
+  uploaded: boolean;
+  downloadUrl: string;
   recordCreated: string;
   recordUpdated: string;
 }

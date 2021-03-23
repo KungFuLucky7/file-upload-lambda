@@ -46,10 +46,10 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
 
   onFileCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
     try {
-      const dueDate = this.calculateDueDate()
+      const recordCreated = this.getCurrentTimestamp()
       const newFile = await createFile(this.props.auth.getIdToken(), {
-        name: this.state.newFilename,
-        dueDate
+        filename: this.state.newFilename,
+        recordCreated
       })
       this.setState({
         files: [...this.state.files, newFile],
@@ -64,10 +64,10 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
     try {
       await deleteFile(this.props.auth.getIdToken(), fileUuid)
       this.setState({
-        files: this.state.files.filter(todo => todo.fileUuid != fileUuid)
+        files: this.state.files.filter(file => file.fileUuid != fileUuid)
       })
     } catch {
-      alert('Todo deletion failed')
+      alert('File deletion failed')
     }
   }
 
@@ -81,11 +81,11 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
       })
       this.setState({
         files: update(this.state.files, {
-          [pos]: { description: { $set: file.description } }
+          [pos]: { uploaded: { $set: true } }
         })
       })
     } catch {
-      alert('Todo deletion failed')
+      alert('File update failed')
     }
   }
 
@@ -104,16 +104,16 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
   render() {
     return (
       <div>
-        <Header as="h1">File Uploads</Header>
+        <Header as="h1">File Upload</Header>
 
-        {this.renderCreateTodoInput()}
+        {this.renderCreateFileInput()}
 
-        {this.renderFileUploads()}
+        {this.renderFiles()}
       </div>
     )
   }
 
-  renderCreateTodoInput() {
+  renderCreateFileInput() {
     return (
       <Grid.Row>
         <Grid.Column width={16}>
@@ -122,12 +122,12 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
               color: 'teal',
               labelPosition: 'left',
               icon: 'add',
-              content: 'New task',
-              onClick: this.onTodoCreate
+              content: 'New file',
+              onClick: this.onFileCreate
             }}
             fluid
             actionPosition="left"
-            placeholder="To change the world..."
+            placeholder="My-new-file.pdf"
             onChange={this.handleNameChange}
           />
         </Grid.Column>
@@ -138,47 +138,47 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
     )
   }
 
-  renderFileUploads() {
+  renderFiles() {
     if (this.state.loadingFiles) {
       return this.renderLoading()
     }
 
-    return this.renderFileUploadsList()
+    return this.renderFilesList()
   }
 
   renderLoading() {
     return (
       <Grid.Row>
         <Loader indeterminate active inline="centered">
-          Loading TODOs
+          Loading Files
         </Loader>
       </Grid.Row>
     )
   }
 
-  renderFileUploadsList() {
+  renderFilesList() {
     return (
       <Grid padded>
-        {this.state.files.map((todo, pos) => {
+        {this.state.files.map((file, pos) => {
           return (
-            <Grid.Row key={todo.fileUuid}>
+            <Grid.Row key={file.fileUuid}>
               <Grid.Column width={1} verticalAlign="middle">
                 <Checkbox
-                  onChange={() => this.onTodoCheck(pos)}
-                  checked={todo.done}
+                  onChange={() => this.onFileCheck(pos)}
+                  checked={file.uploaded}
                 />
               </Grid.Column>
               <Grid.Column width={10} verticalAlign="middle">
-                {todo.name}
+                {file.filename}
               </Grid.Column>
               <Grid.Column width={3} floated="right">
-                {todo.dueDate}
+                {file.recordCreated}
               </Grid.Column>
               <Grid.Column width={1} floated="right">
                 <Button
                   icon
                   color="blue"
-                  onClick={() => this.onEditButtonClick(todo.fileUuid)}
+                  onClick={() => this.onEditButtonClick(file.fileUuid)}
                 >
                   <Icon name="pencil" />
                 </Button>
@@ -187,13 +187,13 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
                 <Button
                   icon
                   color="red"
-                  onClick={() => this.onTodoDelete(todo.fileUuid)}
+                  onClick={() => this.onFileDelete(file.fileUuid)}
                 >
                   <Icon name="delete" />
                 </Button>
               </Grid.Column>
-              {todo.attachmentUrl && (
-                <Image src={todo.attachmentUrl} size="small" wrapped />
+              {file.downloadUrl && (
+                <Image src={file.downloadUrl} size="small" wrapped />
               )}
               <Grid.Column width={16}>
                 <Divider />
@@ -205,10 +205,7 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
     )
   }
 
-  calculateDueDate(): string {
-    const date = new Date()
-    date.setDate(date.getDate() + 7)
-
-    return dateFormat(date, 'yyyy-mm-dd') as string
+  getCurrentTimestamp(): string {
+    return dateFormat(new Date(), "AMERICANSHORTWTIME") as string;
   }
 }
