@@ -132,7 +132,7 @@ def files_delete_file_metadata(file_uuid):
 def files_post_file(file_uuid):
     upload_url = post_file_url(app, file_uuid)
 
-    return Response(body=upload_url, status_code=202)
+    return Response(body={"upload_url": upload_url}, status_code=202)
 
 
 @app.route("/files/{file_uuid}", methods=["GET"], authorizer=jwt_token_auth)
