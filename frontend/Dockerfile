@@ -2,13 +2,9 @@ FROM node:latest
 
 WORKDIR /app
 
-COPY package*.json /app
-
-# Install dependencies
-RUN npm i
-
-# Copy app source
 COPY . /app
+
+RUN npm i
 
 EXPOSE 3000
 

@@ -22,9 +22,5 @@ services:
     command: npm run start
     volumes:
       - .:/app
-      - ~/.aws/credentials:/root/.aws/credentials:ro
     expose:
       - 3000
-    depends_on:
-      - redis
-      - dare-pipeline
