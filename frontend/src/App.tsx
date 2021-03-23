@@ -95,7 +95,7 @@ export default class App extends Component<AppProps, AppState> {
         />
 
         <Route
-          path="/files/:fileUuid/edit"
+          path="/files/:file_uuid/edit"
           exact
           render={props => {
             return <EditFile {...props} auth={this.props.auth} />

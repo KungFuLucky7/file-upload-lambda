@@ -1,11 +1,11 @@
 export interface File {
-  fileUuid: string;
+  file_uuid: string;
   filename: string;
-  fileSize: string;
+  file_size: string;
   description: string;
-  contentType: string;
+  content_type: string;
   uploaded: boolean;
-  downloadUrl: string;
-  recordCreated: string;
-  recordUpdated: string;
+  favorite: boolean;
+  record_created: string;
+  record_updated: string;
 }

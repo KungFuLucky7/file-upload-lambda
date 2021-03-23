@@ -14,7 +14,7 @@ export async function getFiles(idToken: string): Promise<File[]> {
     },
   })
   console.log('Files:', response.data)
-  return response.data.items
+  return response.data
 }
 
 export async function createFile(
@@ -27,27 +27,41 @@ export async function createFile(
       'Authorization': `Bearer ${idToken}`
     }
   })
-  return response.data.item
+  return response.data
+}
+
+export async function getFile(idToken: string, file_uuid: string): Promise<File[]> {
+  console.log('Fetching a file')
+
+  const response = await Axios.get(`${apiEndpoint}/files/metadata${file_uuid}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${idToken}`
+    },
+  })
+  console.log('File:', response.data)
+  return response.data
 }
 
 export async function putFile(
   idToken: string,
-  fileUuid: string,
+  file_uuid: string,
   updatedFile: UpdateFileRequest
 ): Promise<void> {
-  await Axios.put(`${apiEndpoint}/files/metadata/${fileUuid}`, JSON.stringify(updatedFile), {
+  const response = await Axios.put(`${apiEndpoint}/files/metadata/${file_uuid}`, JSON.stringify(updatedFile), {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
     }
   })
+  return response.data
 }
 
 export async function deleteFile(
   idToken: string,
-  fileUuid: string
+  file_uuid: string
 ): Promise<void> {
-  await Axios.delete(`${apiEndpoint}/files/metadata/${fileUuid}`, {
+  await Axios.delete(`${apiEndpoint}/files/metadata/${file_uuid}`, {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -57,9 +71,9 @@ export async function deleteFile(
 
 export async function getUploadUrl(
   idToken: string,
-  fileUuid: string
+  file_uuid: string
 ): Promise<string> {
-  const response = await Axios.post(`${apiEndpoint}/files/${fileUuid}`, '', {
+  const response = await Axios.post(`${apiEndpoint}/files/${file_uuid}`, '', {
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${idToken}`
@@ -68,6 +82,19 @@ export async function getUploadUrl(
   return response.data.upload_url
 }
 
-export async function uploadFile(uploadUrl: string, file: Buffer): Promise<void> {
+export async function uploadFileData(uploadUrl: string, file: Buffer): Promise<void> {
   await Axios.put(uploadUrl, file)
+}
+
+export async function downloadFileData(
+  idToken: string,
+  file_uuid: string
+): Promise<string> {
+  const response = await Axios.get(`${apiEndpoint}/files/${file_uuid}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${idToken}`
+    }
+  })
+  return response.data
 }

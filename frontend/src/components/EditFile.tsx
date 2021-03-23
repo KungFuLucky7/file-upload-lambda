@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Button, Form } from 'semantic-ui-react'
 import Auth from '../auth/Auth'
-import { getUploadUrl, uploadFile } from '../api/fileUploadApi'
+import { getUploadUrl, uploadFileData } from '../api/fileUploadApi'
 
 enum UploadState {
   NoUpload,
@@ -12,7 +12,7 @@ enum UploadState {
 interface EditFileProps {
   match: {
     params: {
-      fileUuid: string
+      file_uuid: string
     }
   }
   auth: Auth
@@ -51,10 +51,10 @@ export class EditFile extends React.PureComponent<
       }
 
       this.setUploadState(UploadState.FetchingPresignedUrl)
-      const uploadUrl = await getUploadUrl(this.props.auth.getIdToken(), this.props.match.params.fileUuid)
+      const uploadUrl = await getUploadUrl(this.props.auth.getIdToken(), this.props.match.params.file_uuid)
 
       this.setUploadState(UploadState.UploadingFile)
-      await uploadFile(uploadUrl, this.state.file)
+      await uploadFileData(uploadUrl, this.state.file)
 
       alert('File was uploaded!')
     } catch (e) {

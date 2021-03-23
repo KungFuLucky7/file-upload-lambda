@@ -9,7 +9,6 @@ import {
   Grid,
   Header,
   Icon,
-  Image,
   Input,
   Loader
 } from 'semantic-ui-react'
@@ -40,8 +39,8 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
     this.setState({ newFilename: event.target.value })
   }
 
-  onEditButtonClick = (fileUuid: string) => {
-    this.props.history.push(`/files/${fileUuid}/edit`)
+  onEditButtonClick = (file_uuid: string) => {
+    this.props.history.push(`/files/${file_uuid}/edit`)
   }
 
   onFileCreate = async (event: React.ChangeEvent<HTMLButtonElement>) => {
@@ -60,11 +59,11 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
     }
   }
 
-  onFileDelete = async (fileUuid: string) => {
+  onFileDelete = async (file_uuid: string) => {
     try {
-      await deleteFile(this.props.auth.getIdToken(), fileUuid)
+      await deleteFile(this.props.auth.getIdToken(), file_uuid)
       this.setState({
-        files: this.state.files.filter(file => file.fileUuid != fileUuid)
+        files: this.state.files.filter(file => file.file_uuid != file_uuid)
       })
     } catch {
       alert('File deletion failed')
@@ -74,7 +73,7 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
   onFileCheck = async (pos: number) => {
     try {
       const file = this.state.files[pos]
-      await putFile(this.props.auth.getIdToken(), file.fileUuid, {
+      await putFile(this.props.auth.getIdToken(), file.file_uuid, {
         filename: file.filename,
         uploaded: file.uploaded,
         recordCreated: file.recordCreated,
@@ -122,7 +121,7 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
               color: 'teal',
               labelPosition: 'left',
               icon: 'add',
-              content: 'New file',
+              content: 'New filename',
               onClick: this.onFileCreate
             }}
             fluid
@@ -157,15 +156,16 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
   }
 
   renderFilesList() {
+    console.log(`Files: ${this.state.files}`);
     return (
       <Grid padded>
         {this.state.files.map((file, pos) => {
           return (
-            <Grid.Row key={file.fileUuid}>
+            <Grid.Row key={file.file_uuid}>
               <Grid.Column width={1} verticalAlign="middle">
                 <Checkbox
                   onChange={() => this.onFileCheck(pos)}
-                  checked={file.uploaded}
+                  checked={file.favorite}
                 />
               </Grid.Column>
               <Grid.Column width={10} verticalAlign="middle">
@@ -178,7 +178,7 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
                 <Button
                   icon
                   color="blue"
-                  onClick={() => this.onEditButtonClick(file.fileUuid)}
+                  onClick={() => this.onEditButtonClick(file.file_uuid)}
                 >
                   <Icon name="pencil" />
                 </Button>
@@ -187,14 +187,13 @@ export class FileUploads extends React.PureComponent<FilesProps, FilesState> {
                 <Button
                   icon
                   color="red"
-                  onClick={() => this.onFileDelete(file.fileUuid)}
+                  onClick={() => this.onFileDelete(file.file_uuid)}
                 >
                   <Icon name="delete" />
                 </Button>
               </Grid.Column>
-              {file.downloadUrl && (
-                <Image src={file.downloadUrl} size="small" wrapped />
-              )}
+              File uploaded: {file.uploaded}
+              }
               <Grid.Column width={16}>
                 <Divider />
               </Grid.Column>
