@@ -19,5 +19,7 @@ deploy:
   region: us-east-1
   template: transformed.yaml
   stack_name: $AWS_STACK_NAME
-  capabilities: CAPABILITY_IAM
+  capabilities:
+    - CAPABILITY_IAM
+    - CAPABILITY_AUTO_EXPAND
   edge: true # opt in to dpl v2
