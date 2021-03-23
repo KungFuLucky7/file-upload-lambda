@@ -19,8 +19,8 @@ services:
     image: file-upload-frontend:latest
     container_name: file-upload-frontend
     hostname: file-upload-frontend
-    command: serve -s build -l 3000
+    command: serve -s build -l 80
     volumes:
       - .:/app
     expose:
-      - 3000
+      - 80
