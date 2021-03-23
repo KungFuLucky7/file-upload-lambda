@@ -50,6 +50,9 @@ def update_file_metadata(
     if "uploaded" in file_metadata:
         update_expression += ", uploaded=:uploaded"
         expression_attribute_values[":uploaded"] = file_metadata["uploaded"]
+    if "favorite" in file_metadata:
+        update_expression += ", favorite=:favorite"
+        expression_attribute_values[":favorite"] = file_metadata["favorite"]
     if "record_updated" in file_metadata:
         update_expression += ", record_updated=:record_updated"
         expression_attribute_values[":record_updated"] = file_metadata["record_updated"]

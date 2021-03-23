@@ -42,6 +42,11 @@
       "type": "boolean",
       "description": "File uploaded status",
       "default": false
+    },
+    "favorite": {
+      "type": "boolean",
+      "description": "File favorite status",
+      "default": false
     }
   },
   "additionalProperties": false,

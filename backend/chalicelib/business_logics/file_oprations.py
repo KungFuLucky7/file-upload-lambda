@@ -57,6 +57,7 @@ def post_file_metadata(app):
         **file_metadata,
         **{
             "uploaded": False,
+            "favorite": False,
             "record_created": current_timestamp,
             "record_updated": current_timestamp,
         },
