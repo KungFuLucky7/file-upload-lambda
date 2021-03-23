@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  nginx:
+    container_name: nginx
+    hostname: nginx
+    restart: always
+    build: ./nginx
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - file-upload-frontend
+
+  file-upload-frontend:
+    restart: always
+    build: .
+    image: file-upload-frontend:latest
+    container_name: file-upload-frontend
+    hostname: file-upload-frontend
+    command: npm run start
+    volumes:
+      - .:/app
+      - ~/.aws/credentials:/root/.aws/credentials:ro
+    expose:
+      - 3000
+    depends_on:
+      - redis
+      - dare-pipeline
